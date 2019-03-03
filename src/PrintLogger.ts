@@ -7,7 +7,7 @@ export const PrintLog = Logger => (target, name, descriptor) => {
       `${className}#${name}`
     );
     const result = original.apply(this, args);
-    console.log(`Return: ${JSON.stringify(result)}`, `${className}#${name}`);
+    Logger.log(`Return: ${JSON.stringify(result)}`, `${className}#${name}`);
     return result;
   };
 
