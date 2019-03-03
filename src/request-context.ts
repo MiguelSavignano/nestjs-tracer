@@ -9,3 +9,4 @@ import {
 export const PrintLog = PrintLogCore(RequestLogger);
 export const PrintLogAsync = PrintLogCoreAsync(RequestLogger);
 export const ContextServiceMiddleware = ContextService.middleware("request");
+export { RequestLogger };
