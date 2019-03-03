@@ -1,0 +1,23 @@
+{
+  "name": "class-logger",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@nestjs/common": "^5.7.3",
+    "@types/jest": "^24.0.9",
+    "@types/node": "^11.10.4",
+    "jest": "^24.1.0",
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "^6.4.0",
+    "ts-jest": "^24.0.0",
+    "ts-node": "^8.0.2",
+    "tsc": "^1.20150623.0",
+    "typescript": "^3.3.3333"
+  }
+}
