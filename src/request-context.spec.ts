@@ -21,45 +21,26 @@ app.get("/test", (req, res) => {
 });
 
 describe("App middleware", () => {
-  it("GET /test", async () => {
+  it("generate uuid per request", async () => {
     const spy = jest.spyOn(Logger, "log").mockImplementation(jest.fn());
 
     await request(app)
       .get("/test")
       .expect(200);
     expect(spy).toBeCalled();
-    expect(spy.mock.calls[0][0]).toMatchInlineSnapshot(
-      `"Call with ARGS: [\\"Foo\\"]"`
-    );
-    expect(spy.mock.calls[0][1]).toMatchInlineSnapshot(
-      `"UUID_MOCK] [Dummy#hello"`
-    );
-    expect(spy.mock.calls[1][0]).toMatchInlineSnapshot(
-      `"Return: \\"Hi Foo\\""`
-    );
-    expect(spy.mock.calls[1][1]).toMatchInlineSnapshot(
-      `"UUID_MOCK] [Dummy#hello"`
-    );
 
-    // Use the same context
+    // In the same request generate only one uuid
+    expect(uuidv1).toBeCalledTimes(1);
+    expect(spy).toBeCalledTimes(2);
+
     await request(app)
       .get("/test")
       .expect(200);
 
     expect(spy).toBeCalled();
-    expect(spy.mock.calls[1][0]).toMatchInlineSnapshot(
-      `"Return: \\"Hi Foo\\""`
-    );
-    expect(spy.mock.calls[1][1]).toMatchInlineSnapshot(
-      `"UUID_MOCK] [Dummy#hello"`
-    );
-    expect(spy.mock.calls[2][0]).toMatchInlineSnapshot(
-      `"Call with ARGS: [\\"Foo\\"]"`
-    );
-    expect(spy.mock.calls[2][1]).toMatchInlineSnapshot(
-      `"UUID_MOCK] [Dummy#hello"`
-    );
 
-    expect(uuidv1).toBeCalledTimes(1);
+    // generate new uuid for new request
+    expect(uuidv1).toBeCalledTimes(2);
+    expect(spy).toBeCalledTimes(4);
   });
 });
