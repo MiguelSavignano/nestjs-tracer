@@ -1,31 +1,31 @@
-## ClassLogger Nestjs
+## Nestjs tracer
 
-Use decorators for trace your class mehods
+Use decorators for trace your class methods
 
 ### PrintLog
 
-```typecript
+```javascript
 class Dummy {
   @PrintLog
   hello(name) {
     return `Hi ${name}`;
   }
 }
-new Dummy().hello('Foo')
+new Dummy().hello("Foo");
 // [Dummy#hello] Call with ARGS: ["Foo"]
 // [Dummy#hello] Return: Hi Foo
 ```
 
 ### PrintLogAsync
 
-```typecript
+```javascript
 class Dummy {
   @PrintLogAsync
   async hello(name) {
     return `Hi ${name}`;
   }
 }
-new Dummy().hello('Foo')
+new Dummy().hello("Foo");
 // [Dummy#hello] Call with ARGS: ["Foo"]
 // [Dummy#hello] Return: Hi Foo
 ```
