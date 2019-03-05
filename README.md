@@ -34,7 +34,7 @@ new Dummy().hello("Foo");
 
 Help to trace called methods in the same request.
 
-Requestc context, generate one uuid per request.
+Request context, generate one uuid per request.
 
 Example:
 
