@@ -36,6 +36,12 @@ Help to trace called methods in the same request.
 
 Request context, generate one uuid per request.
 
+Install request-context
+
+```
+npm install request-context --save
+```
+
 Example:
 
 - Configure express app with request-context middleware
