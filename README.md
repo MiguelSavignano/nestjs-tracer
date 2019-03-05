@@ -42,13 +42,14 @@ Example:
 
 ```js
 // main.ts
-import { ContextServiceMiddleware, RequestLogger } from "./request-context";
+import { ContextService, RequestLogger } from "./request-context";
 async function bootstrap() {
   // ...
   const app = await NestFactory.create(AppModule, {
     logger: false
   });
-  app.use(ContextServiceMiddleware));
+  app.use(ContextService.middlewareRequest());
+  app.use(ContextService.middleware());
   app.useLogger(RequestLogger);
   // ...
 }

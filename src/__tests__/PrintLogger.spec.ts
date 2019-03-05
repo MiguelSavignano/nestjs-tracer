@@ -1,4 +1,4 @@
-import { PrintLog, PrintLogAsync } from "./";
+import { PrintLog, PrintLogAsync } from "..";
 import { Logger } from "@nestjs/common";
 
 class Dummy {

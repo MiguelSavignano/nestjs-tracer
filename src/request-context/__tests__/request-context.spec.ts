@@ -1,4 +1,4 @@
-import { ContextServiceMiddleware, PrintLog } from "./request-context";
+import { ContextService, PrintLog } from "..";
 import { Logger } from "@nestjs/common";
 import * as request from "supertest";
 import * as express from "express";
@@ -6,7 +6,8 @@ import * as uuidv1 from "uuid/v1";
 jest.mock("uuid/v1");
 
 const app = express();
-app.use(ContextServiceMiddleware);
+app.use(ContextService.middlewareRequest());
+app.use(ContextService.middleware());
 
 class Dummy {
   @PrintLog
