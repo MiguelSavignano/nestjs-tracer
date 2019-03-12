@@ -17,42 +17,45 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const _1 = require("./");
+const __1 = require("..");
 const common_1 = require("@nestjs/common");
+const request = require("supertest");
+const express = require("express");
+const uuidv1 = require("uuid/v1");
+jest.mock("uuid/v1");
+const app = express();
+app.use(__1.ContextService.middlewareRequest());
+app.use(__1.ContextService.middleware());
 class Dummy {
     hello(name) {
         return `Hi ${name}`;
     }
-    helloAsync(name) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return `Hi ${name}`;
-        });
-    }
 }
 __decorate([
-    _1.PrintLog,
+    __1.PrintLog,
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], Dummy.prototype, "hello", null);
-__decorate([
-    _1.PrintLogAsync,
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Promise)
-], Dummy.prototype, "helloAsync", null);
-describe("PrintLog", () => {
-    it("#PrintLog", () => {
-        jest.clearAllMocks();
+app.get("/test", (req, res) => {
+    const message = new Dummy().hello("Foo");
+    res.send(message);
+});
+describe("App middleware", () => {
+    it("generate uuid per request", () => __awaiter(this, void 0, void 0, function* () {
         const spy = jest.spyOn(common_1.Logger, "log").mockImplementation(jest.fn());
-        expect(new Dummy().hello("Foo")).toEqual(`Hi Foo`);
+        yield request(app)
+            .get("/test")
+            .expect(200);
         expect(spy).toBeCalled();
-    });
-    it("#PrintLogAsync", () => __awaiter(this, void 0, void 0, function* () {
-        jest.clearAllMocks();
-        const spy = jest.spyOn(common_1.Logger, "log").mockImplementation(jest.fn());
-        expect(yield new Dummy().helloAsync("Bazz")).toEqual(`Hi Bazz`);
+        expect(uuidv1).toBeCalledTimes(1);
+        expect(spy).toBeCalledTimes(2);
+        yield request(app)
+            .get("/test")
+            .expect(200);
         expect(spy).toBeCalled();
+        expect(uuidv1).toBeCalledTimes(2);
+        expect(spy).toBeCalledTimes(4);
     }));
 });
-//# sourceMappingURL=PrintLogger.spec.js.map
+//# sourceMappingURL=request-context.spec.js.map
