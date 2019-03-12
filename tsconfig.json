@@ -12,5 +12,6 @@
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./"
-  }
+  },
+  "exclude": ["**/__tests__/*", "**/__mocks__/*"]
 }
