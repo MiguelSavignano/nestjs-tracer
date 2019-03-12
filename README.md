@@ -48,7 +48,7 @@ Example:
 
 ```js
 // main.ts
-import { ContextService, RequestLogger } from "./request-context";
+import { ContextService, RequestLogger } from "nestjs-tracer/request-context";
 async function bootstrap() {
   // ...
   const app = await NestFactory.create(AppModule, {
