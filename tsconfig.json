@@ -10,7 +10,7 @@
     "noLib": false,
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
-    "outDir": "./dist",
+    "outDir": ".",
     "baseUrl": "./"
   },
   "exclude": ["**/__tests__/*", "**/__mocks__/*"]
