@@ -57,7 +57,7 @@ describe("PrintLog", () => {
     try {
       await new Dummy().helloAsyncError("Bazz");
     } catch (error) {
-      expect(error).toMatchInlineSnapshot(`"Error Bazz"`);
+      expect(error).toMatchInlineSnapshot(`[Error: Error Bazz]`);
     }
   });
 });
