@@ -21,9 +21,7 @@ exports.PrintLogAsync = Logger => (target, name, descriptor) => {
             .then(result => {
             Logger.log(`Return: ${JSON.stringify(result)}`, `${className}#${name}`);
         })
-            .catch(error => {
-            throw error;
-        });
+            .catch(error => { });
         return result;
     };
     return descriptor;
