@@ -2,9 +2,9 @@
   "name": "nestjs-tracer",
   "version": "0.2.4",
   "description": "",
-  "main": "dist/index.js",
+  "main": "index.js",
   "scripts": {
-    "build": "rm -fr dist && tsc",
+    "build": "rm -fr *.js *.d.ts *.js.map request-context && tsc",
     "test": "jest"
   },
   "author": "migue.masx@gmail.com",
