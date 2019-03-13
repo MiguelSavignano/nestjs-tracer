@@ -17,9 +17,8 @@ class Dummy {
     throw new Error(`Error ${name}`);
   }
 
-  // @PrintLogAsync
+  @PrintLogAsync
   helloAsyncErrorPromise(name) {
-    console.error("Esto se llama solo una vez");
     return new Promise((resolve, reject) => {
       reject(`Error ${name}`);
     });
@@ -48,6 +47,7 @@ describe("PrintLog", () => {
       await new Dummy().helloAsyncErrorPromise("Bazz");
     } catch (error) {
       expect(error).toMatchInlineSnapshot(`"Error Bazz"`);
+      expect(spy).toBeCalled();
     }
   });
 
@@ -58,6 +58,7 @@ describe("PrintLog", () => {
       await new Dummy().helloAsyncError("Bazz");
     } catch (error) {
       expect(error).toMatchInlineSnapshot(`[Error: Error Bazz]`);
+      expect(spy).toBeCalled();
     }
   });
 });
