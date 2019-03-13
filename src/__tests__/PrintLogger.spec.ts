@@ -11,6 +11,18 @@ class Dummy {
   async helloAsync(name) {
     return `Hi ${name}`;
   }
+
+  @PrintLogAsync
+  async helloAsyncError(name) {
+    throw new Error(`Error ${name}`);
+  }
+
+  @PrintLogAsync
+  helloAsyncErrorPromise(name) {
+    return new Promise((resolve, reject) => {
+      reject(`Error ${name}`);
+    });
+  }
 }
 
 describe("PrintLog", () => {
@@ -26,5 +38,27 @@ describe("PrintLog", () => {
     const spy = jest.spyOn(Logger, "log").mockImplementation(jest.fn());
     expect(await new Dummy().helloAsync("Bazz")).toEqual(`Hi Bazz`);
     expect(spy).toBeCalled();
+  });
+
+  it("#PrintLogAsync handler promise rejects catch", async () => {
+    jest.clearAllMocks();
+    const spy = jest.spyOn(Logger, "log").mockImplementation(jest.fn());
+    try {
+      await new Dummy().helloAsyncErrorPromise("Bazz");
+    } catch (error) {
+      expect(error).toMatchInlineSnapshot(`"Error Bazz"`);
+      expect(spy).toBeCalled();
+    }
+  });
+
+  it("#PrintLogAsync handler async rejects catch", async () => {
+    jest.clearAllMocks();
+    const spy = jest.spyOn(Logger, "log").mockImplementation(jest.fn());
+    try {
+      await new Dummy().helloAsyncError("Bazz");
+    } catch (error) {
+      expect(error).toMatchInlineSnapshot(`[Error: Error Bazz]`);
+      expect(spy).toBeCalled();
+    }
   });
 });
