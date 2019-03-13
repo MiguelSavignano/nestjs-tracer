@@ -23,9 +23,13 @@ export const PrintLogAsync = Logger => (target, name, descriptor) => {
       `${className}#${name}`
     );
     const result = original.apply(this, args);
-    result.then(result => {
-      Logger.log(`Return: ${JSON.stringify(result)}`, `${className}#${name}`);
-    });
+    result
+      .then(result => {
+        Logger.log(`Return: ${JSON.stringify(result)}`, `${className}#${name}`);
+      })
+      .catch(error => {
+        throw error;
+      });
     return result;
   };
 
