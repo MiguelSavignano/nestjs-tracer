@@ -1,7 +1,14 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { AppService } from './app.service';
 import { ApiImplicitQuery } from '@nestjs/swagger';
 import { PrintLog, PrintLogAsync } from '../../../src/index';
+
+import { ApiModelPropertyOptional } from '@nestjs/swagger';
+
+export class GetHelloDto {
+  @ApiModelPropertyOptional()
+  readonly name?: string;
+}
 
 @Controller()
 export class AppController {
@@ -16,6 +23,12 @@ export class AppController {
   })
   @PrintLog
   getHello(): string {
+    return this.appService.getHello();
+  }
+
+  @Get('dtoSync')
+  // @PrintLog
+  getHelloDto(@Query() input: GetHelloDto): string {
     return this.appService.getHello();
   }
 
