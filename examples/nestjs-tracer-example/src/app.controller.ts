@@ -3,7 +3,7 @@ import { AppService } from './app.service';
 
 import { ApiModelPropertyOptional } from '@nestjs/swagger';
 
-export const PrintLog = (target, name, descriptor) => {
+export const PrintLog = function(target, name, descriptor) {
   const className = target.constructor.name;
   const original = descriptor.value;
 
@@ -13,7 +13,7 @@ export const PrintLog = (target, name, descriptor) => {
         `Call with args: ${JSON.stringify(args)}`,
         `${className}#${name}`,
       );
-      const result = target.apply(this, args);
+      const result = target.apply(thisArg, args);
       Logger.log(`Return: ${JSON.stringify(result)}`, `${className}#${name}`);
       return result;
     },
@@ -34,7 +34,7 @@ export class AppController {
   @Get()
   @PrintLog
   getHelloDto(@Query() input: GetHelloDto): string {
-    return `hello world ${input.name}`;
-    // return this.appService.getHello();
+    // return `hello world ${input.name}`;
+    return this.appService.getHello();
   }
 }
