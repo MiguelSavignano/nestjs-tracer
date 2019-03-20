@@ -1,0 +1,44 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "The cats API description",
+    "version": "1.0",
+    "title": "Cats example"
+  },
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "cats",
+      "description": ""
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "parameters": [
+          {
+            "name": "example",
+            "required": false,
+            "in": "query",
+            "description": "some",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    }
+  }
+}
