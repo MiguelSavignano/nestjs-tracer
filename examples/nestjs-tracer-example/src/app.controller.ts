@@ -23,4 +23,10 @@ export class AppController {
   async getHelloDtoAsync(@Query() input: GetHelloDto): Promise<string> {
     return `${this.appService.getHello()} ${input.name}`;
   }
+
+  @Get('asyncError')
+  @PrintLogAsync
+  async getHelloDtoAsyncError(@Query() input: GetHelloDto): Promise<string> {
+    throw new Error(`${input.name}`);
+  }
 }
