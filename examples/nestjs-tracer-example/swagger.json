@@ -39,6 +39,30 @@
           "application/json"
         ]
       }
+    },
+    "/async": {
+      "get": {
+        "parameters": [
+          {
+            "name": "example",
+            "required": false,
+            "in": "query",
+            "description": "some",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
     }
   }
 }
