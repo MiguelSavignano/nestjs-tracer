@@ -12,7 +12,7 @@ class Dummy {
   }
 }
 new Dummy().hello("Foo");
-// [Dummy#hello] Call with ARGS: ["Foo"]
+// [Dummy#hello] Call with args: ["Foo"]
 // [Dummy#hello] Return: Hi Foo
 ```
 
@@ -26,7 +26,7 @@ class Dummy {
   }
 }
 new Dummy().hello("Foo");
-// [Dummy#hello] Call with ARGS: ["Foo"]
+// [Dummy#hello] Call with args: ["Foo"]
 // [Dummy#hello] Return: Hi Foo
 ```
 

@@ -1,0 +1,89 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "The cats API description",
+    "version": "1.0",
+    "title": "Cats example"
+  },
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "cats",
+      "description": ""
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "parameters": [
+          {
+            "type": "string",
+            "name": "name",
+            "required": false,
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/async": {
+      "get": {
+        "parameters": [
+          {
+            "type": "string",
+            "name": "name",
+            "required": false,
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/asyncError": {
+      "get": {
+        "parameters": [
+          {
+            "type": "string",
+            "name": "name",
+            "required": false,
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    }
+  }
+}

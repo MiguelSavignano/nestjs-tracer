@@ -1,4 +1,5 @@
 src
 .circleci
+examples
 jest.config.js
 tsconfig.json
