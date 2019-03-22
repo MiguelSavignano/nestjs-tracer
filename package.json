@@ -28,7 +28,6 @@
     "typescript": "^3.3.3333"
   },
   "dependencies": {
-    "@nestjs/swagger": "^3.0.1",
     "uuid": "^3.3.2"
   }
 }
