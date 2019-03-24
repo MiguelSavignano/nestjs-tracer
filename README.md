@@ -2,9 +2,18 @@
 
 Use decorators for trace your class methods
 
+## Install
+
+```
+npm install nestjs-tracer --save
+```
+
+## Usage
+
 ### PrintLog
 
 ```javascript
+import { PrintLog } from "nestjs-tracer";
 class Dummy {
   @PrintLog
   hello(name) {
@@ -19,6 +28,7 @@ new Dummy().hello("Foo");
 ### PrintLogAsync
 
 ```javascript
+import { PrintLogAsync } from "nestjs-tracer";
 class Dummy {
   @PrintLogAsync
   async hello(name) {
