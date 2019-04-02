@@ -3,7 +3,7 @@ export const PrintLogProxy = Logger => (
   methodName,
   options: { className?: string } = {}
 ) => {
-  const className = options.className || typeof instance;
+  const className = options.className || instance.constructor.name;
   const original = instance[methodName];
   const handler = {
     apply: function(target, thisArg, args) {
