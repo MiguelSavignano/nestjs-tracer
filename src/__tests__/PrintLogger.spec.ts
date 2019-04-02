@@ -1,4 +1,6 @@
 import { PrintLog, PrintLogAsync } from "..";
+import { PrintLog as PrintLogger } from "../PrintLogger";
+
 import { Logger } from "@nestjs/common";
 
 class Dummy {
@@ -26,22 +28,33 @@ class Dummy {
 }
 
 describe("PrintLog", () => {
-  it("#PrintLog", () => {
+  beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  it("#PrintLogger", () => {
+    const spy = jest.spyOn(Logger, "log").mockImplementation(jest.fn());
+    const instance = {
+      value: name => `Hi ${name}`
+    };
+    PrintLogger(Logger)({ constructor: { name: "Object" } }, name, instance);
+    expect(instance.value("Foo")).toEqual(`Hi Foo`);
+    expect(spy).toBeCalled();
+  });
+
+  it("#PrintLog", () => {
     const spy = jest.spyOn(Logger, "log").mockImplementation(jest.fn());
     expect(new Dummy().hello("Foo")).toEqual(`Hi Foo`);
     expect(spy).toBeCalled();
   });
 
   it("#PrintLogAsync", async () => {
-    jest.clearAllMocks();
     const spy = jest.spyOn(Logger, "log").mockImplementation(jest.fn());
     expect(await new Dummy().helloAsync("Bazz")).toEqual(`Hi Bazz`);
     expect(spy).toBeCalled();
   });
 
   it("#PrintLogAsync handler promise rejects catch", async () => {
-    jest.clearAllMocks();
     const spy = jest.spyOn(Logger, "log").mockImplementation(jest.fn());
     try {
       await new Dummy().helloAsyncErrorPromise("Bazz");

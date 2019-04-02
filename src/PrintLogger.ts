@@ -1,3 +1,12 @@
+// interface ITarget {
+//   constructor: {
+//     name: string;
+//   };
+// }
+
+// interface IDescriptor {
+//   value: any;
+// }
 export const PrintLog = Logger => (target, name, descriptor) => {
   const className = target.constructor.name;
   const original = descriptor.value;
