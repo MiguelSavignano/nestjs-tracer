@@ -5,6 +5,8 @@ Use decorators for trace your class methods
 ### PrintLog
 
 ```javascript
+import { PrintLog } from "nestjs-tracer";
+
 class Dummy {
   @PrintLog
   hello(name) {
@@ -19,6 +21,8 @@ new Dummy().hello("Foo");
 ### PrintLogAsync
 
 ```javascript
+import { PrintLogAsync } from "nestjs-tracer";
+
 class Dummy {
   @PrintLogAsync
   async hello(name) {
@@ -35,6 +39,8 @@ new Dummy().hello("Foo");
 PrintLog for any instance.
 
 ```javascript
+import { PrintLogProxy } from "nestjs-tracer";
+
 import * as fs from "fs";
 PrintLogProxy(fs, "existsSync", { className: "Fs" });
 fs.existsSync(`./package.json`);
