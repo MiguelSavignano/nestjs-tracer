@@ -30,6 +30,18 @@ new Dummy().hello("Foo");
 // [Dummy#hello] Return: Hi Foo
 ```
 
+### PrintLogProxy
+
+PrintLog for any instance.
+
+```javascript
+import * as fs from "fs";
+PrintLogProxy(fs, "existsSync", { className: "Fs" });
+fs.existsSync(`./package.json`);
+// [Fs#existsSync] Call with args: ["./package.json"]
+// [Fs#existsSync] Return: true
+```
+
 ## Request context
 
 Help to trace called methods in the same request.

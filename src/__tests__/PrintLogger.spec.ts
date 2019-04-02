@@ -1,5 +1,5 @@
+import * as fs from "fs";
 import { PrintLog, PrintLogAsync, PrintLogProxy } from "..";
-
 import { Logger } from "@nestjs/common";
 
 class Dummy {
@@ -61,6 +61,18 @@ describe("PrintLog", () => {
       PrintLogProxy(instance, "hello");
       instance.hello("Foo");
       expect(spy).nthCalledWith(1, 'Call with args: ["Foo"]', "Dummy#hello");
+    });
+
+    it("example for fs object", () => {
+      const spy = jest.spyOn(Logger, "log").mockImplementation(jest.fn());
+      PrintLogProxy(fs, "existsSync", { className: "Fs" });
+      fs.existsSync(`./package.json`);
+      expect(spy).nthCalledWith(
+        1,
+        'Call with args: ["./package.json"]',
+        "Fs#existsSync"
+      );
+      expect(spy).nthCalledWith(2, "Return: true", "Fs#existsSync");
     });
   });
 
