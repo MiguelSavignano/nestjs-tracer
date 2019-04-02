@@ -1,5 +1,9 @@
-export const PrintLogProxy = Logger => (instance, methodName) => {
-  const className = typeof instance;
+export const PrintLogProxy = Logger => (
+  instance,
+  methodName,
+  options: { className?: string } = {}
+) => {
+  const className = options.className || typeof instance;
   const original = instance[methodName];
   const handler = {
     apply: function(target, thisArg, args) {

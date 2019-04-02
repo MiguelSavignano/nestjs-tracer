@@ -31,16 +31,24 @@ describe("PrintLog", () => {
     jest.clearAllMocks();
   });
 
-  it("#PrintLogProxy", () => {
-    const spy = jest.spyOn(Logger, "log").mockImplementation(jest.fn());
-    const instance = {
-      hi: name => `Hi ${name}`
-    };
-    PrintLogProxy(instance, "hi");
-    expect(instance.hi("Foo")).toEqual(`Hi Foo`);
-    expect(spy).toBeCalled();
-    expect(spy).nthCalledWith(1, 'Call with args: ["Foo"]', "object#hi");
-    expect(spy).nthCalledWith(2, 'Return: "Hi Foo"', "object#hi");
+  describe("#PrintLogProxy", () => {
+    it("call", () => {
+      const spy = jest.spyOn(Logger, "log").mockImplementation(jest.fn());
+      const instance = { hi: name => `Hi ${name}` };
+      PrintLogProxy(instance, "hi");
+      expect(instance.hi("Foo")).toEqual(`Hi Foo`);
+      expect(spy).toBeCalled();
+      expect(spy).nthCalledWith(1, 'Call with args: ["Foo"]', "object#hi");
+      expect(spy).nthCalledWith(2, 'Return: "Hi Foo"', "object#hi");
+    });
+
+    it("change className", () => {
+      const spy = jest.spyOn(Logger, "log").mockImplementation(jest.fn());
+      const instance = { hi: name => `Hi ${name}` };
+      PrintLogProxy(instance, "hi", { className: "Dummy" });
+      instance.hi("Foo");
+      expect(spy).nthCalledWith(1, 'Call with args: ["Foo"]', "Dummy#hi");
+    });
   });
 
   it("#PrintLog", () => {
