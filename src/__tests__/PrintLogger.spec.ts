@@ -1,5 +1,5 @@
 import * as fs from "fs";
-import { PrintLog, PrintLogAsync, PrintLogProxy } from "..";
+import { PrintLog, PrintLogAsync, PrintLogProxy, PrintLogProxyAsync } from "..";
 import { Logger } from "@nestjs/common";
 
 class Dummy {
@@ -29,6 +29,14 @@ class Dummy {
 describe("PrintLog", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  it("#PrintLogProxyAsync", async () => {
+    const spy = jest.spyOn(Logger, "log").mockImplementation(jest.fn());
+    const instance = { hello: async name => `Hi ${name}` };
+    PrintLogProxyAsync(instance, "hello");
+    await instance.hello("Foo");
+    expect(spy).toBeCalled();
   });
 
   describe("#PrintLogProxy", () => {
