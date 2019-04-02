@@ -1,12 +1,24 @@
-// interface ITarget {
-//   constructor: {
-//     name: string;
-//   };
-// }
+export const PrintLogProxy = Logger => (instance, methodName) => {
+  const className = typeof instance;
+  const original = instance[methodName];
+  const handler = {
+    apply: function(target, thisArg, args) {
+      Logger.log(
+        `Call with args: ${JSON.stringify(args)}`,
+        `${className}#${methodName}`
+      );
+      const result = target.apply(thisArg, args);
+      Logger.log(
+        `Return: ${JSON.stringify(result)}`,
+        `${className}#${methodName}`
+      );
+      return result;
+    }
+  };
+  const proxy = new Proxy(original, handler);
+  instance[methodName] = proxy;
+};
 
-// interface IDescriptor {
-//   value: any;
-// }
 export const PrintLog = Logger => (target, name, descriptor) => {
   const className = target.constructor.name;
   const original = descriptor.value;

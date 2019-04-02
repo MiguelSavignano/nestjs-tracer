@@ -1,5 +1,4 @@
-import { PrintLog, PrintLogAsync } from "..";
-import { PrintLog as PrintLogger } from "../PrintLogger";
+import { PrintLog, PrintLogAsync, PrintLogProxy } from "..";
 
 import { Logger } from "@nestjs/common";
 
@@ -32,14 +31,16 @@ describe("PrintLog", () => {
     jest.clearAllMocks();
   });
 
-  it("#PrintLogger", () => {
+  it("#PrintLogProxy", () => {
     const spy = jest.spyOn(Logger, "log").mockImplementation(jest.fn());
     const instance = {
-      value: name => `Hi ${name}`
+      hi: name => `Hi ${name}`
     };
-    PrintLogger(Logger)({ constructor: { name: "Object" } }, name, instance);
-    expect(instance.value("Foo")).toEqual(`Hi Foo`);
+    PrintLogProxy(instance, "hi");
+    expect(instance.hi("Foo")).toEqual(`Hi Foo`);
     expect(spy).toBeCalled();
+    expect(spy).nthCalledWith(1, 'Call with args: ["Foo"]', "object#hi");
+    expect(spy).nthCalledWith(2, 'Return: "Hi Foo"', "object#hi");
   });
 
   it("#PrintLog", () => {
