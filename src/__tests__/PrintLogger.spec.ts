@@ -36,7 +36,8 @@ describe("PrintLog", () => {
     const instance = { hello: async name => `Hi ${name}` };
     PrintLogProxyAsync(instance, "hello");
     await instance.hello("Foo");
-    expect(spy).toBeCalled();
+    expect(spy).nthCalledWith(1, 'Call with args: ["Foo"]', "Object#hello");
+    expect(spy).nthCalledWith(2, 'Return: "Hi Foo"', "Object#hello");
   });
 
   describe("#PrintLogProxy", () => {

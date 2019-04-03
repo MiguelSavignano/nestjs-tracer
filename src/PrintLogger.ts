@@ -21,27 +21,27 @@ export const PrintLogProxyAsync = Logger => (
   const original = instance[methodName];
   const proxy = new Proxy(
     original,
-    proxyHandlerAsync({ Logger, className, methodName: name })
+    proxyHandlerAsync({ Logger, className, methodName })
   );
   instance[methodName] = proxy;
 };
 
-export const PrintLog = Logger => (target, name, descriptor) => {
+export const PrintLog = Logger => (target, methodName, descriptor) => {
   const className = target.constructor.name;
   const original = descriptor.value;
   const proxy = new Proxy(
     original,
-    proxyHandler({ Logger, className, methodName: name })
+    proxyHandler({ Logger, className, methodName })
   );
   descriptor.value = proxy;
 };
 
-export const PrintLogAsync = Logger => (target, name, descriptor) => {
+export const PrintLogAsync = Logger => (target, methodName, descriptor) => {
   const className = target.constructor.name;
   const original = descriptor.value;
   const proxy = new Proxy(
     original,
-    proxyHandlerAsync({ Logger, className, methodName: name })
+    proxyHandlerAsync({ Logger, className, methodName })
   );
   descriptor.value = proxy;
 };
@@ -65,7 +65,7 @@ const proxyHandlerAsync = ({ Logger, className, methodName }) => ({
   apply: function(target, thisArg, args) {
     Logger.log(
       `Call with args: ${JSON.stringify(args)}`,
-      `${className}#${name}`
+      `${className}#${methodName}`
     );
     const result = target.apply(thisArg, args);
     result
