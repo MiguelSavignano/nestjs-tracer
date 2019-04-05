@@ -21,7 +21,7 @@ export const PrintLogProxyAsync = Logger => (
   const original = instance[methodName];
   const proxy = new Proxy(
     original,
-    proxyHandlerAsync({ Logger, className, methodName })
+    proxyHandler({ Logger, className, methodName })
   );
   instance[methodName] = proxy;
 };
@@ -39,43 +39,43 @@ export const PrintLog = Logger => (target, methodName, descriptor) => {
 export const PrintLogAsync = Logger => (target, methodName, descriptor) => {
   const className = target.constructor.name;
   const original = descriptor.value;
+
   const proxy = new Proxy(
     original,
-    proxyHandlerAsync({ Logger, className, methodName })
+    proxyHandler({ Logger, className, methodName })
   );
   descriptor.value = proxy;
 };
 
-const proxyHandler = ({ Logger, className, methodName }) => ({
-  apply: function(target, thisArg, args) {
-    Logger.log(
-      `Call with args: ${JSON.stringify(args)}`,
-      `${className}#${methodName}`
-    );
-    const result = target.apply(thisArg, args);
-    Logger.log(
-      `Return: ${JSON.stringify(result)}`,
-      `${className}#${methodName}`
-    );
-    return result;
-  }
-});
+const handlerBeforCall = ({ Logger, className, methodName, args }) => {
+  Logger.log(
+    `Call with args: ${JSON.stringify(args)}`,
+    `${className}#${methodName}`
+  );
+};
 
-const proxyHandlerAsync = ({ Logger, className, methodName }) => ({
+const handlerAfterCall = ({ Logger, className, methodName, result }) => {
+  Logger.log(`Return: ${JSON.stringify(result)}`, `${className}#${methodName}`);
+};
+
+const proxyHandler = ({
+  Logger,
+  className,
+  methodName,
+  onBeforeCall = handlerBeforCall,
+  onAfterCall = handlerAfterCall
+}) => ({
   apply: function(target, thisArg, args) {
-    Logger.log(
-      `Call with args: ${JSON.stringify(args)}`,
-      `${className}#${methodName}`
-    );
     const result = target.apply(thisArg, args);
-    result
-      .then(result => {
-        Logger.log(
-          `Return: ${JSON.stringify(result)}`,
-          `${className}#${methodName}`
-        );
-      })
-      .catch(error => {});
+    onBeforeCall({ Logger, className, methodName, args });
+    if (result instanceof Promise) {
+      result
+        .then(result => onAfterCall({ Logger, className, methodName, result }))
+        .catch(error => {});
+    } else {
+      onAfterCall({ Logger, className, methodName, result });
+    }
+
     return result;
   }
 });
