@@ -1,24 +1,24 @@
 import * as fs from "fs";
-import { PrintLog, PrintLogAsync, PrintLogProxy, PrintLogProxyAsync } from "..";
+import { PrintLog, PrintLogProxy } from "..";
 import { Logger } from "@nestjs/common";
 
 class Dummy {
-  @PrintLog
+  @PrintLog()
   hello(name) {
     return `Hi ${name}`;
   }
 
-  @PrintLogAsync
+  @PrintLog()
   async helloAsync(name) {
     return `Hi ${name}`;
   }
 
-  @PrintLogAsync
+  @PrintLog()
   async helloAsyncError(name) {
     throw new Error(`Error ${name}`);
   }
 
-  @PrintLogAsync
+  @PrintLog()
   helloAsyncErrorPromise(name) {
     return new Promise((resolve, reject) => {
       reject(`Error ${name}`);
@@ -31,10 +31,10 @@ describe("PrintLog", () => {
     jest.clearAllMocks();
   });
 
-  it("#PrintLogProxyAsync", async () => {
+  it("#PrintLogProxy", async () => {
     const spy = jest.spyOn(Logger, "log").mockImplementation(jest.fn());
     const instance = { hello: async name => `Hi ${name}` };
-    PrintLogProxyAsync(instance, "hello");
+    PrintLogProxy(instance, "hello");
     await instance.hello("Foo");
     expect(spy).nthCalledWith(1, 'Call with args: ["Foo"]', "Object#hello");
     expect(spy).nthCalledWith(2, 'Return: "Hi Foo"', "Object#hello");

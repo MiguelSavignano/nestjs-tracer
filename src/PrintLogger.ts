@@ -1,4 +1,13 @@
-export const PrintLogProxy = Logger => (
+interface Logger {
+  log(message: any, context?: string): void;
+  error(message: any, trace?: string, context?: string): void;
+  warn(message: any, context?: string): void;
+}
+
+interface PrintLogOptions {
+  Logger: Logger;
+}
+export const PrintLogProxy = ({ Logger }: PrintLogOptions) => (
   instance,
   methodName,
   options: { className?: string } = {}
@@ -12,21 +21,11 @@ export const PrintLogProxy = Logger => (
   instance[methodName] = proxy;
 };
 
-export const PrintLogProxyAsync = Logger => (
-  instance,
+export const PrintLog = ({ Logger }: PrintLogOptions) => (
+  target,
   methodName,
-  options: { className?: string } = {}
+  descriptor
 ) => {
-  const className = options.className || instance.constructor.name;
-  const original = instance[methodName];
-  const proxy = new Proxy(
-    original,
-    proxyHandlerAsync({ Logger, className, methodName })
-  );
-  instance[methodName] = proxy;
-};
-
-export const PrintLog = Logger => (target, methodName, descriptor) => {
   const className = target.constructor.name;
   const original = descriptor.value;
   const proxy = new Proxy(
@@ -36,46 +35,55 @@ export const PrintLog = Logger => (target, methodName, descriptor) => {
   descriptor.value = proxy;
 };
 
-export const PrintLogAsync = Logger => (target, methodName, descriptor) => {
-  const className = target.constructor.name;
-  const original = descriptor.value;
-  const proxy = new Proxy(
-    original,
-    proxyHandlerAsync({ Logger, className, methodName })
+const handlerBeforCall = ({
+  Logger,
+  className,
+  methodName,
+  args
+}: {
+  Logger: Logger;
+  className: string;
+  methodName: string;
+  args: any;
+}) => {
+  Logger.log(
+    `Call with args: ${JSON.stringify(args)}`,
+    `${className}#${methodName}`
   );
-  descriptor.value = proxy;
 };
 
-const proxyHandler = ({ Logger, className, methodName }) => ({
-  apply: function(target, thisArg, args) {
-    Logger.log(
-      `Call with args: ${JSON.stringify(args)}`,
-      `${className}#${methodName}`
-    );
-    const result = target.apply(thisArg, args);
-    Logger.log(
-      `Return: ${JSON.stringify(result)}`,
-      `${className}#${methodName}`
-    );
-    return result;
-  }
-});
+const handlerAfterCall = ({
+  Logger,
+  className,
+  methodName,
+  result
+}: {
+  Logger: Logger;
+  className: string;
+  methodName: string;
+  result: any;
+}) => {
+  Logger.log(`Return: ${JSON.stringify(result)}`, `${className}#${methodName}`);
+};
 
-const proxyHandlerAsync = ({ Logger, className, methodName }) => ({
+const proxyHandler = ({
+  Logger,
+  className,
+  methodName,
+  onBeforeCall = handlerBeforCall,
+  onAfterCall = handlerAfterCall
+}) => ({
   apply: function(target, thisArg, args) {
-    Logger.log(
-      `Call with args: ${JSON.stringify(args)}`,
-      `${className}#${methodName}`
-    );
     const result = target.apply(thisArg, args);
-    result
-      .then(result => {
-        Logger.log(
-          `Return: ${JSON.stringify(result)}`,
-          `${className}#${methodName}`
-        );
-      })
-      .catch(error => {});
+    onBeforeCall({ Logger, className, methodName, args });
+    if (result instanceof Promise) {
+      result
+        .then(result => onAfterCall({ Logger, className, methodName, result }))
+        .catch(error => {});
+    } else {
+      onAfterCall({ Logger, className, methodName, result });
+    }
+
     return result;
   }
 });

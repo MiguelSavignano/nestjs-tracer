@@ -6,6 +6,7 @@
   },
   "rules": {
     "quotemark": [true, "single"],
+    "max-classes-per-file": false,
     "member-access": [false],
     "ordered-imports": [false],
     "max-line-length": [true, 150],

@@ -16,7 +16,7 @@ npm install nestjs-tracer --save
 import { PrintLog } from "nestjs-tracer";
 
 class Dummy {
-  @PrintLog
+  @PrintLog()
   hello(name) {
     return `Hi ${name}`;
   }
@@ -26,13 +26,13 @@ new Dummy().hello("Foo");
 // [Dummy#hello] Return: Hi Foo
 ```
 
-### PrintLogAsync
+### PrintLog async functions
 
 ```javascript
-import { PrintLogAsync } from "nestjs-tracer";
+import { PrintLog } from "nestjs-tracer";
 
 class Dummy {
-  @PrintLogAsync
+  @PrintLog()
   async hello(name) {
     return `Hi ${name}`;
   }
@@ -92,7 +92,7 @@ async function bootstrap() {
 ```javascript
 import { PrintLog } from "nestjs-tracer/request-context";
 class Dummy {
-  @PrintLog
+  @PrintLog()
   hello(name) {
     return `Hi ${name}`;
   }
