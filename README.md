@@ -26,13 +26,13 @@ new Dummy().hello("Foo");
 // [Dummy#hello] Return: Hi Foo
 ```
 
-### PrintLogAsync
+### PrintLog async functions
 
 ```javascript
-import { PrintLogAsync } from "nestjs-tracer";
+import { PrintLog } from "nestjs-tracer";
 
 class Dummy {
-  @PrintLogAsync
+  @PrintLog
   async hello(name) {
     return `Hi ${name}`;
   }

@@ -12,34 +12,9 @@ export const PrintLogProxy = Logger => (
   instance[methodName] = proxy;
 };
 
-export const PrintLogProxyAsync = Logger => (
-  instance,
-  methodName,
-  options: { className?: string } = {}
-) => {
-  const className = options.className || instance.constructor.name;
-  const original = instance[methodName];
-  const proxy = new Proxy(
-    original,
-    proxyHandler({ Logger, className, methodName })
-  );
-  instance[methodName] = proxy;
-};
-
 export const PrintLog = Logger => (target, methodName, descriptor) => {
   const className = target.constructor.name;
   const original = descriptor.value;
-  const proxy = new Proxy(
-    original,
-    proxyHandler({ Logger, className, methodName })
-  );
-  descriptor.value = proxy;
-};
-
-export const PrintLogAsync = Logger => (target, methodName, descriptor) => {
-  const className = target.constructor.name;
-  const original = descriptor.value;
-
   const proxy = new Proxy(
     original,
     proxyHandler({ Logger, className, methodName })
