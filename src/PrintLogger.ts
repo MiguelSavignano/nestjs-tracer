@@ -1,4 +1,4 @@
-export const PrintLogProxy = Logger => (
+export const PrintLogProxy = ({ Logger }) => (
   instance,
   methodName,
   options: { className?: string } = {}
@@ -12,7 +12,7 @@ export const PrintLogProxy = Logger => (
   instance[methodName] = proxy;
 };
 
-export const PrintLog = Logger => (target, methodName, descriptor) => {
+export const PrintLog = ({ Logger }) => (target, methodName, descriptor) => {
   const className = target.constructor.name;
   const original = descriptor.value;
   const proxy = new Proxy(

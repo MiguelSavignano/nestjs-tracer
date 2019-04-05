@@ -6,6 +6,8 @@ import {
   PrintLogProxy as PrintLogProxyCore
 } from "../PrintLogger";
 
-export const PrintLog = PrintLogCore(RequestLogger);
-export const PrintLogProxy = PrintLogProxyCore(RequestLogger);
+export const PrintLog = PrintLogCore({ Logger: RequestLogger });
+export const PrintLogProxy = PrintLogProxyCore({
+  Logger: RequestLogger
+});
 export { RequestLogger };
