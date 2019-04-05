@@ -1,4 +1,13 @@
-export const PrintLogProxy = ({ Logger }) => (
+interface Logger {
+  log(message: any, context?: string): void;
+  error(message: any, trace?: string, context?: string): void;
+  warn(message: any, context?: string): void;
+}
+
+interface PrintLogOptions {
+  Logger: Logger;
+}
+export const PrintLogProxy = ({ Logger }: PrintLogOptions) => (
   instance,
   methodName,
   options: { className?: string } = {}
@@ -12,7 +21,11 @@ export const PrintLogProxy = ({ Logger }) => (
   instance[methodName] = proxy;
 };
 
-export const PrintLog = ({ Logger }) => (target, methodName, descriptor) => {
+export const PrintLog = ({ Logger }: PrintLogOptions) => (
+  target,
+  methodName,
+  descriptor
+) => {
   const className = target.constructor.name;
   const original = descriptor.value;
   const proxy = new Proxy(
@@ -22,14 +35,34 @@ export const PrintLog = ({ Logger }) => (target, methodName, descriptor) => {
   descriptor.value = proxy;
 };
 
-const handlerBeforCall = ({ Logger, className, methodName, args }) => {
+const handlerBeforCall = ({
+  Logger,
+  className,
+  methodName,
+  args
+}: {
+  Logger: Logger;
+  className: string;
+  methodName: string;
+  args: any;
+}) => {
   Logger.log(
     `Call with args: ${JSON.stringify(args)}`,
     `${className}#${methodName}`
   );
 };
 
-const handlerAfterCall = ({ Logger, className, methodName, result }) => {
+const handlerAfterCall = ({
+  Logger,
+  className,
+  methodName,
+  result
+}: {
+  Logger: Logger;
+  className: string;
+  methodName: string;
+  result: any;
+}) => {
   Logger.log(`Return: ${JSON.stringify(result)}`, `${className}#${methodName}`);
 };
 

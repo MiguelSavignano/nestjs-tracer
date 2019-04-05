@@ -2,15 +2,15 @@ import { Logger } from "@nestjs/common";
 import { ContextService } from "./ContextService";
 
 export class RequestLogger extends Logger {
-  log(message: string, context?: string) {
+  log(message: any, context?: string) {
     super.log(message, `${RequestLogger.getRequestId()}${context}`);
   }
 
-  warn(message: string, context?: string) {
+  warn(message: any, context?: string) {
     super.warn(message, `${RequestLogger.getRequestId()}${context}`);
   }
 
-  error(message: string, trace: string, context?: string) {
+  error(message: any, trace?: string, context?: string) {
     super.error(message, trace, `${RequestLogger.getRequestId()}${context}`);
   }
 
