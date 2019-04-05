@@ -13,19 +13,19 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  @PrintLog
+  @PrintLog()
   getHelloDto(@Query() input: GetHelloDto): string {
     return `${this.appService.getHello()} ${input.name}`;
   }
 
   @Get('async')
-  @PrintLog
+  @PrintLog()
   async getHelloDtoAsync(@Query() input: GetHelloDto): Promise<string> {
     return `${this.appService.getHello()} ${input.name}`;
   }
 
   @Get('asyncError')
-  @PrintLog
+  @PrintLog()
   async getHelloDtoAsyncError(@Query() input: GetHelloDto): Promise<string> {
     throw new Error(`${input.name}`);
   }

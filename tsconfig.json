@@ -6,10 +6,11 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "es6",
+    "sourceMap": false,
     "noImplicitAny": false,
     "noLib": false,
     "allowSyntheticDefaultImports": true,
-    "sourceMap": true,
+
     "outDir": ".",
     "baseUrl": "./"
   },
