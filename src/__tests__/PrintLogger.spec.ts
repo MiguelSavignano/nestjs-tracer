@@ -3,22 +3,22 @@ import { PrintLog, PrintLogProxy } from "..";
 import { Logger } from "@nestjs/common";
 
 class Dummy {
-  @PrintLog
+  @PrintLog()
   hello(name) {
     return `Hi ${name}`;
   }
 
-  @PrintLog
+  @PrintLog()
   async helloAsync(name) {
     return `Hi ${name}`;
   }
 
-  @PrintLog
+  @PrintLog()
   async helloAsyncError(name) {
     throw new Error(`Error ${name}`);
   }
 
-  @PrintLog
+  @PrintLog()
   helloAsyncErrorPromise(name) {
     return new Promise((resolve, reject) => {
       reject(`Error ${name}`);

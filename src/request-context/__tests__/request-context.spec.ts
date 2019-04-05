@@ -10,7 +10,7 @@ app.use(ContextService.middlewareRequest());
 app.use(ContextService.middleware());
 
 class Dummy {
-  @PrintLog
+  @PrintLog()
   hello(name) {
     return `Hi ${name}`;
   }
