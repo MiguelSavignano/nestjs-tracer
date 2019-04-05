@@ -14,6 +14,7 @@ npm install nestjs-tracer --save
 
 ```javascript
 import { PrintLog } from "nestjs-tracer";
+
 class Dummy {
   @PrintLog
   hello(name) {
@@ -29,6 +30,7 @@ new Dummy().hello("Foo");
 
 ```javascript
 import { PrintLogAsync } from "nestjs-tracer";
+
 class Dummy {
   @PrintLogAsync
   async hello(name) {
@@ -38,6 +40,20 @@ class Dummy {
 new Dummy().hello("Foo");
 // [Dummy#hello] Call with args: ["Foo"]
 // [Dummy#hello] Return: Hi Foo
+```
+
+### PrintLogProxy
+
+PrintLog for any instance.
+
+```javascript
+import { PrintLogProxy } from "nestjs-tracer";
+
+import * as fs from "fs";
+PrintLogProxy(fs, "existsSync", { className: "Fs" });
+fs.existsSync(`./package.json`);
+// [Fs#existsSync] Call with args: ["./package.json"]
+// [Fs#existsSync] Return: true
 ```
 
 ## Request context
