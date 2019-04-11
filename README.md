@@ -109,7 +109,7 @@ new Dummy().hello("Foo");
 
 ```typescript
 class Dummy {
-  @PrintLog({ parseResult: (value) => {...value, token: "*********"}  })
+  @PrintLog({ parseResult: value => ({ ...value, token: "*********" }) })
   foo(secret) {
     return { token: "1234", result: { foo: "bar" } };
   }
