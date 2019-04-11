@@ -1,3 +1,5 @@
+import * as CircularJSON from "circular-json";
+
 interface Logger {
   log(message: any, context?: string): void;
   error(message: any, trace?: string, context?: string): void;
@@ -35,53 +37,35 @@ export const PrintLog = ({ Logger }: PrintLogOptions) => (
   descriptor.value = proxy;
 };
 
-const handlerBeforCall = ({
-  Logger,
-  className,
-  methodName,
-  args
-}: {
-  Logger: Logger;
-  className: string;
-  methodName: string;
-  args: any;
-}) => {
-  Logger.log(
-    `Call with args: ${JSON.stringify(args)}`,
-    `${className}#${methodName}`
-  );
-};
-
-const handlerAfterCall = ({
-  Logger,
-  className,
-  methodName,
-  result
-}: {
-  Logger: Logger;
-  className: string;
-  methodName: string;
-  result: any;
-}) => {
-  Logger.log(`Return: ${JSON.stringify(result)}`, `${className}#${methodName}`);
+export const printMessage = (
+  Logger: Logger,
+  message: string,
+  value: any,
+  contextTag: string,
+  type?: "before" | "after"
+) => {
+  Logger.log(`${message} ${CircularJSON.stringify(value)}`, contextTag);
 };
 
 const proxyHandler = ({
   Logger,
   className,
   methodName,
-  onBeforeCall = handlerBeforCall,
-  onAfterCall = handlerAfterCall
+  printMessageFnc = printMessage
 }) => ({
   apply: function(target, thisArg, args) {
     const result = target.apply(thisArg, args);
-    onBeforeCall({ Logger, className, methodName, args });
+    const contextTag = `${className}#${methodName}`;
+
+    printMessageFnc(Logger, "Call with args:", args, contextTag, "before");
     if (result instanceof Promise) {
       result
-        .then(result => onAfterCall({ Logger, className, methodName, result }))
+        .then(result =>
+          printMessageFnc(Logger, "Return:", result, contextTag, "after")
+        )
         .catch(error => {});
     } else {
-      onAfterCall({ Logger, className, methodName, result });
+      printMessage(Logger, "Return:", result, contextTag, "after");
     }
 
     return result;

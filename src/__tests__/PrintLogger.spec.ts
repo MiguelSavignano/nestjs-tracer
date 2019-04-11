@@ -1,6 +1,7 @@
 import * as fs from "fs";
 import { PrintLog, PrintLogProxy } from "..";
 import { Logger } from "@nestjs/common";
+import { printMessage } from "../PrintLogger";
 
 class Dummy {
   @PrintLog()
@@ -116,5 +117,29 @@ describe("PrintLog", () => {
       expect(error).toMatchInlineSnapshot(`[Error: Error Bazz]`);
       expect(spy).toBeCalled();
     }
+  });
+
+  describe("#printMessage", () => {
+    it("with simple object", () => {
+      const spy = jest.spyOn(Logger, "log").mockImplementation(jest.fn());
+      printMessage(Logger, "", { foo: "bazz" }, "Example#example");
+
+      expect(spy).toBeCalledWith(' {"foo":"bazz"}', "Example#example");
+    });
+
+    it("with circular Object", () => {
+      const spy = jest.spyOn(Logger, "log").mockImplementation(jest.fn());
+
+      const citcularObject = { foo: "bar" };
+      citcularObject["self"] = citcularObject;
+
+      printMessage(Logger, "", citcularObject, "Example#example");
+
+      expect(spy).toBeCalled();
+      expect(spy).toBeCalledWith(
+        ' {"foo":"bar","self":"~"}',
+        "Example#example"
+      );
+    });
   });
 });
