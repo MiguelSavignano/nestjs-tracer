@@ -24,8 +24,6 @@ export const PrintLogProxy = ({ Logger }) => (
   options: IPrintLogProxyOptions = {}
 ) => {
   const className = options.className || instance.constructor.name;
-  const parseResult = options.parseResult || returnSameValue;
-  const parseArguments = options.parseArguments || returnSameValue;
   const original = instance[methodName];
 
   const proxy = new Proxy(
@@ -34,8 +32,7 @@ export const PrintLogProxy = ({ Logger }) => (
       Logger,
       className,
       methodName,
-      parseArguments,
-      parseResult
+      ...options
     })
   );
   instance[methodName] = proxy;
