@@ -143,3 +143,59 @@ describe("PrintLog", () => {
     });
   });
 });
+
+const parseResult = (value: any) => {
+  delete value.token;
+  return value;
+};
+
+const parseArguments = value => {
+  return [];
+};
+
+class DummyOptions {
+  @PrintLog({ parseResult, parseArguments })
+  foo(secret) {
+    return { token: "1234", result: { foo: "bar" } };
+  }
+}
+
+describe("PrintLog options", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("parseArguments and parseResult", () => {
+    const spy = jest.spyOn(Logger, "log").mockImplementation(jest.fn());
+    new DummyOptions().foo("secret");
+
+    expect(spy).toHaveBeenNthCalledWith(
+      1,
+      "Call with args: []",
+      "DummyOptions#foo"
+    );
+
+    expect(spy).toHaveBeenNthCalledWith(
+      2,
+      'Return: {"result":{"foo":"bar"}}',
+      "DummyOptions#foo"
+    );
+  });
+});
+
+describe("PrintLogProxy options", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+  it("parseArguments and parseResult", () => {
+    const spy = jest.spyOn(Logger, "log").mockImplementation(jest.fn());
+    const instance = {
+      foo: secret => ({ token: "1234", result: { foo: "bar" } })
+    };
+    PrintLogProxy(instance, "foo", { parseArguments, parseResult });
+    instance.foo("Secret");
+
+    expect(spy.mock.calls[0][0]).toEqual("Call with args: []");
+    expect(spy.mock.calls[1][0]).toEqual('Return: {"result":{"foo":"bar"}}');
+  });
+});
