@@ -1,7 +1,11 @@
 import * as fs from "fs";
 import { PrintLog, PrintLogProxy } from "..";
 import { Logger } from "@nestjs/common";
-import { handlerBeforeCall, handlerAfterCall } from "../PrintLogger";
+import {
+  handlerBeforeCall,
+  handlerAfterCall,
+  printMessage
+} from "../PrintLogger";
 
 class Dummy {
   @PrintLog()
@@ -119,17 +123,12 @@ describe("PrintLog", () => {
     }
   });
 
-  describe("#handlerAfterCall", () => {
-    it("call", () => {
+  describe("#printMessage", () => {
+    it("with simple object", () => {
       const spy = jest.spyOn(Logger, "log").mockImplementation(jest.fn());
-      handlerAfterCall({
-        Logger,
-        className: "Example",
-        methodName: "example",
-        result: [1, 2]
-      });
+      printMessage(Logger, { foo: "bazz" }, "Example#example", "after");
 
-      expect(spy).toBeCalledWith("Return: [1,2]", "Example#example");
+      expect(spy).toBeCalledWith('Return: {"foo":"bazz"}', "Example#example");
     });
 
     it("with circular Object", () => {
@@ -138,12 +137,7 @@ describe("PrintLog", () => {
       const citcularObject = { foo: "bar" };
       citcularObject["self"] = citcularObject;
 
-      handlerAfterCall({
-        Logger,
-        className: "Example",
-        methodName: "example",
-        result: citcularObject
-      });
+      printMessage(Logger, citcularObject, "Example#example", "after");
 
       expect(spy).toBeCalled();
       expect(spy).toBeCalledWith(

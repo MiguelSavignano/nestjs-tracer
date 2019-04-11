@@ -37,6 +37,16 @@ export const PrintLog = ({ Logger }: PrintLogOptions) => (
   descriptor.value = proxy;
 };
 
+export const printMessage = (
+  Logger: Logger,
+  value: any,
+  contextTag: string,
+  type: "before" | "after"
+) => {
+  const message = type === "after" ? "Return:" : "Call with args:";
+  Logger.log(`${message} ${CircularJSON.stringify(value)}`, contextTag);
+};
+
 export const handlerBeforeCall = ({
   Logger,
   className,
@@ -48,10 +58,7 @@ export const handlerBeforeCall = ({
   methodName: string;
   args: any;
 }) => {
-  Logger.log(
-    `Call with args: ${CircularJSON.stringify(args)}`,
-    `${className}#${methodName}`
-  );
+  printMessage(Logger, args, `${className}#${methodName}`, "before");
 };
 
 export const handlerAfterCall = ({
@@ -65,10 +72,7 @@ export const handlerAfterCall = ({
   methodName: string;
   result: any;
 }) => {
-  Logger.log(
-    `Return: ${CircularJSON.stringify(result)}`,
-    `${className}#${methodName}`
-  );
+  printMessage(Logger, result, `${className}#${methodName}`, "after");
 };
 
 const proxyHandler = ({
