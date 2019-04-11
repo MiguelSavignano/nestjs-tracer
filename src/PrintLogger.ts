@@ -1,3 +1,5 @@
+import * as CircularJSON from "circular-json";
+
 interface Logger {
   log(message: any, context?: string): void;
   error(message: any, trace?: string, context?: string): void;
@@ -47,12 +49,12 @@ export const handlerBeforeCall = ({
   args: any;
 }) => {
   Logger.log(
-    `Call with args: ${JSON.stringify(args)}`,
+    `Call with args: ${CircularJSON.stringify(args)}`,
     `${className}#${methodName}`
   );
 };
 
-const handlerAfterCall = ({
+export const handlerAfterCall = ({
   Logger,
   className,
   methodName,
@@ -63,7 +65,10 @@ const handlerAfterCall = ({
   methodName: string;
   result: any;
 }) => {
-  Logger.log(`Return: ${JSON.stringify(result)}`, `${className}#${methodName}`);
+  Logger.log(
+    `Return: ${CircularJSON.stringify(result)}`,
+    `${className}#${methodName}`
+  );
 };
 
 const proxyHandler = ({

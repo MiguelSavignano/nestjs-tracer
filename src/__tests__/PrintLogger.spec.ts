@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import { PrintLog, PrintLogProxy } from "..";
 import { Logger } from "@nestjs/common";
-import { handlerBeforeCall } from "../PrintLogger";
+import { handlerBeforeCall, handlerAfterCall } from "../PrintLogger";
 
 class Dummy {
   @PrintLog()
@@ -119,35 +119,37 @@ describe("PrintLog", () => {
     }
   });
 
-  describe("#handlerBeforeCall", () => {
+  describe("#handlerAfterCall", () => {
     it("call", () => {
       const spy = jest.spyOn(Logger, "log").mockImplementation(jest.fn());
-      handlerBeforeCall({
+      handlerAfterCall({
         Logger,
         className: "Example",
         methodName: "example",
-        args: [1, 2]
+        result: [1, 2]
       });
 
-      expect(spy).toBeCalledWith("Call with args: [1,2]", "Example#example");
+      expect(spy).toBeCalledWith("Return: [1,2]", "Example#example");
     });
 
-    it("circular Object", () => {
+    it("with circular Object", () => {
       const spy = jest.spyOn(Logger, "log").mockImplementation(jest.fn());
 
-      const object = { arr: undefined, obj: undefined };
-      object.arr = [object, object];
-      object.arr.push(object.arr);
-      object.obj = object;
+      const citcularObject = { foo: "bar" };
+      citcularObject["self"] = citcularObject;
 
-      handlerBeforeCall({
+      handlerAfterCall({
         Logger,
         className: "Example",
         methodName: "example",
-        args: object
+        result: citcularObject
       });
 
       expect(spy).toBeCalled();
+      expect(spy).toBeCalledWith(
+        'Return: {"foo":"bar","self":"~"}',
+        "Example#example"
+      );
     });
   });
 });
