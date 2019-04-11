@@ -39,58 +39,33 @@ export const PrintLog = ({ Logger }: PrintLogOptions) => (
 
 export const printMessage = (
   Logger: Logger,
+  message: string,
   value: any,
   contextTag: string,
-  type: "before" | "after"
+  type?: "before" | "after"
 ) => {
-  const message = type === "after" ? "Return:" : "Call with args:";
   Logger.log(`${message} ${CircularJSON.stringify(value)}`, contextTag);
-};
-
-const handlerBeforeCall = ({
-  Logger,
-  className,
-  methodName,
-  args
-}: {
-  Logger: Logger;
-  className: string;
-  methodName: string;
-  args: any;
-}) => {
-  printMessage(Logger, args, `${className}#${methodName}`, "before");
-};
-
-const handlerAfterCall = ({
-  Logger,
-  className,
-  methodName,
-  result
-}: {
-  Logger: Logger;
-  className: string;
-  methodName: string;
-  result: any;
-}) => {
-  printMessage(Logger, result, `${className}#${methodName}`, "after");
 };
 
 const proxyHandler = ({
   Logger,
   className,
   methodName,
-  onBeforeCall = handlerBeforeCall,
-  onAfterCall = handlerAfterCall
+  printMessageFnc = printMessage
 }) => ({
   apply: function(target, thisArg, args) {
     const result = target.apply(thisArg, args);
-    onBeforeCall({ Logger, className, methodName, args });
+    const contextTag = `${className}#${methodName}`;
+
+    printMessageFnc(Logger, "Call with args:", args, contextTag, "before");
     if (result instanceof Promise) {
       result
-        .then(result => onAfterCall({ Logger, className, methodName, result }))
+        .then(result =>
+          printMessageFnc(Logger, "Return:", result, contextTag, "after")
+        )
         .catch(error => {});
     } else {
-      onAfterCall({ Logger, className, methodName, result });
+      printMessage(Logger, "Return:", result, contextTag, "after");
     }
 
     return result;

@@ -122,9 +122,9 @@ describe("PrintLog", () => {
   describe("#printMessage", () => {
     it("with simple object", () => {
       const spy = jest.spyOn(Logger, "log").mockImplementation(jest.fn());
-      printMessage(Logger, { foo: "bazz" }, "Example#example", "after");
+      printMessage(Logger, "", { foo: "bazz" }, "Example#example");
 
-      expect(spy).toBeCalledWith('Return: {"foo":"bazz"}', "Example#example");
+      expect(spy).toBeCalledWith(' {"foo":"bazz"}', "Example#example");
     });
 
     it("with circular Object", () => {
@@ -133,11 +133,11 @@ describe("PrintLog", () => {
       const citcularObject = { foo: "bar" };
       citcularObject["self"] = citcularObject;
 
-      printMessage(Logger, citcularObject, "Example#example", "after");
+      printMessage(Logger, "", citcularObject, "Example#example");
 
       expect(spy).toBeCalled();
       expect(spy).toBeCalledWith(
-        'Return: {"foo":"bar","self":"~"}',
+        ' {"foo":"bar","self":"~"}',
         "Example#example"
       );
     });
