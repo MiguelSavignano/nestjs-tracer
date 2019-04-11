@@ -100,3 +100,29 @@ class Dummy {
 new Dummy().hello("Foo");
 // f45bg6-56bh-hfc3n-jhu76j [Dummy#hello] Return: Hi Foo
 ```
+
+## PrintLog Options
+
+- Hidden secret information in logs
+
+### parseResult
+
+```typescript
+class Dummy {
+  @PrintLog({ parseResult: (value) => {...value, token: "*********"}  })
+  foo(secret) {
+    return { token: "1234", result: { foo: "bar" } };
+  }
+}
+```
+
+### parseArguments
+
+```typescript
+class Dummy {
+  @PrintLog({ parseArguments: (value: any[]) => ["secret*****"] })
+  foo(secret) {
+    return { token: "1234", result: { foo: "bar" } };
+  }
+}
+```
