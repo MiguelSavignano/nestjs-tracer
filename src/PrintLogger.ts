@@ -35,7 +35,7 @@ export const PrintLog = ({ Logger }: PrintLogOptions) => (
   descriptor.value = proxy;
 };
 
-const handlerBeforCall = ({
+export const handlerBeforeCall = ({
   Logger,
   className,
   methodName,
@@ -70,7 +70,7 @@ const proxyHandler = ({
   Logger,
   className,
   methodName,
-  onBeforeCall = handlerBeforCall,
+  onBeforeCall = handlerBeforeCall,
   onAfterCall = handlerAfterCall
 }) => ({
   apply: function(target, thisArg, args) {

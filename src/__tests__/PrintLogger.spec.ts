@@ -1,6 +1,7 @@
 import * as fs from "fs";
 import { PrintLog, PrintLogProxy } from "..";
 import { Logger } from "@nestjs/common";
+import { handlerBeforeCall } from "../PrintLogger";
 
 class Dummy {
   @PrintLog()
@@ -116,5 +117,37 @@ describe("PrintLog", () => {
       expect(error).toMatchInlineSnapshot(`[Error: Error Bazz]`);
       expect(spy).toBeCalled();
     }
+  });
+
+  describe("#handlerBeforeCall", () => {
+    it("call", () => {
+      const spy = jest.spyOn(Logger, "log").mockImplementation(jest.fn());
+      handlerBeforeCall({
+        Logger,
+        className: "Example",
+        methodName: "example",
+        args: [1, 2]
+      });
+
+      expect(spy).toBeCalledWith("Call with args: [1,2]", "Example#example");
+    });
+
+    it("circular Object", () => {
+      const spy = jest.spyOn(Logger, "log").mockImplementation(jest.fn());
+
+      const object = { arr: undefined, obj: undefined };
+      object.arr = [object, object];
+      object.arr.push(object.arr);
+      object.obj = object;
+
+      handlerBeforeCall({
+        Logger,
+        className: "Example",
+        methodName: "example",
+        args: object
+      });
+
+      expect(spy).toBeCalled();
+    });
   });
 });
