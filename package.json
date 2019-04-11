@@ -29,6 +29,7 @@
     "typescript": "^3.3.3333"
   },
   "dependencies": {
+    "circular-json": "^0.5.9",
     "uuid": "^3.3.2"
   }
 }

@@ -1,6 +1,7 @@
 import * as fs from "fs";
 import { PrintLog, PrintLogProxy } from "..";
 import { Logger } from "@nestjs/common";
+import { printMessage } from "../PrintLogger";
 
 class Dummy {
   @PrintLog()
@@ -91,13 +92,13 @@ describe("PrintLog", () => {
     expect(spy).toBeCalled();
   });
 
-  it("#PrintLogAsync", async () => {
+  it("#PrintLog", async () => {
     const spy = jest.spyOn(Logger, "log").mockImplementation(jest.fn());
     expect(await new Dummy().helloAsync("Bazz")).toEqual(`Hi Bazz`);
     expect(spy).toBeCalled();
   });
 
-  it("#PrintLogAsync handler promise rejects catch", async () => {
+  it("#PrintLog handler promise rejects catch", async () => {
     const spy = jest.spyOn(Logger, "log").mockImplementation(jest.fn());
     try {
       await new Dummy().helloAsyncErrorPromise("Bazz");
@@ -107,7 +108,7 @@ describe("PrintLog", () => {
     }
   });
 
-  it("#PrintLogAsync handler async rejects catch", async () => {
+  it("#PrintLog handler async rejects catch", async () => {
     jest.clearAllMocks();
     const spy = jest.spyOn(Logger, "log").mockImplementation(jest.fn());
     try {
@@ -116,5 +117,29 @@ describe("PrintLog", () => {
       expect(error).toMatchInlineSnapshot(`[Error: Error Bazz]`);
       expect(spy).toBeCalled();
     }
+  });
+
+  describe("#printMessage", () => {
+    it("with simple object", () => {
+      const spy = jest.spyOn(Logger, "log").mockImplementation(jest.fn());
+      printMessage(Logger, "", { foo: "bazz" }, "Example#example");
+
+      expect(spy).toBeCalledWith(' {"foo":"bazz"}', "Example#example");
+    });
+
+    it("with circular Object", () => {
+      const spy = jest.spyOn(Logger, "log").mockImplementation(jest.fn());
+
+      const citcularObject = { foo: "bar" };
+      citcularObject["self"] = citcularObject;
+
+      printMessage(Logger, "", citcularObject, "Example#example");
+
+      expect(spy).toBeCalled();
+      expect(spy).toBeCalledWith(
+        ' {"foo":"bar","self":"~"}',
+        "Example#example"
+      );
+    });
   });
 });
