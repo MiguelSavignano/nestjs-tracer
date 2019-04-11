@@ -181,3 +181,21 @@ describe("PrintLog options", () => {
     );
   });
 });
+
+describe("PrintLogProxy", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+  it("parseArguments and parseResult", () => {
+    const spy = jest.spyOn(Logger, "log").mockImplementation(jest.fn());
+    const instance = {
+      foo: secret => ({ token: "1234", result: { foo: "bar" } })
+    };
+
+    PrintLogProxy(instance, "foo", { parseArguments, parseResult });
+
+    instance.foo("Secret");
+    expect(spy.mock.calls[0][0]).toEqual("Call with args: []");
+    expect(spy.mock.calls[1][0]).toEqual('Return: {"result":{"foo":"bar"}}');
+  });
+});

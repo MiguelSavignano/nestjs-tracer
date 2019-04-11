@@ -12,16 +12,31 @@ export interface IPrintLogOptions {
   parseArguments?: (value: any[]) => any[];
 }
 
+export interface IPrintLogProxyOptions {
+  className?: string;
+  parseResult?: (value: any) => any;
+  parseArguments?: (value: any[]) => any[];
+}
+
 export const PrintLogProxy = ({ Logger }) => (
   instance,
   methodName,
-  options: { className?: string } = {}
+  options: IPrintLogProxyOptions = {}
 ) => {
   const className = options.className || instance.constructor.name;
+  const parseResult = options.parseResult || returnSameValue;
+  const parseArguments = options.parseArguments || returnSameValue;
   const original = instance[methodName];
+
   const proxy = new Proxy(
     original,
-    proxyHandler({ Logger, className, methodName })
+    proxyHandler({
+      Logger,
+      className,
+      methodName,
+      parseArguments,
+      parseResult
+    })
   );
   instance[methodName] = proxy;
 };
@@ -40,13 +55,15 @@ export const PrintLog = ({ Logger, ...options }: IPrintLogOptions) => (
   descriptor.value = proxy;
 };
 
+const returnSameValue = value => value;
+
 const proxyHandler = ({
   Logger,
   className,
   methodName,
   printMessageFnc = printMessage,
-  parseResult = value => value,
-  parseArguments = value => value
+  parseResult = returnSameValue,
+  parseArguments = returnSameValue
 }) => ({
   apply: function(target, thisArg, args) {
     const result = target.apply(thisArg, args);
