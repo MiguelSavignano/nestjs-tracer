@@ -91,13 +91,13 @@ describe("PrintLog", () => {
     expect(spy).toBeCalled();
   });
 
-  it("#PrintLogAsync", async () => {
+  it("#PrintLog", async () => {
     const spy = jest.spyOn(Logger, "log").mockImplementation(jest.fn());
     expect(await new Dummy().helloAsync("Bazz")).toEqual(`Hi Bazz`);
     expect(spy).toBeCalled();
   });
 
-  it("#PrintLogAsync handler promise rejects catch", async () => {
+  it("#PrintLog handler promise rejects catch", async () => {
     const spy = jest.spyOn(Logger, "log").mockImplementation(jest.fn());
     try {
       await new Dummy().helloAsyncErrorPromise("Bazz");
@@ -107,7 +107,7 @@ describe("PrintLog", () => {
     }
   });
 
-  it("#PrintLogAsync handler async rejects catch", async () => {
+  it("#PrintLog handler async rejects catch", async () => {
     jest.clearAllMocks();
     const spy = jest.spyOn(Logger, "log").mockImplementation(jest.fn());
     try {
