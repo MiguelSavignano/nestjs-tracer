@@ -47,7 +47,7 @@ export const printMessage = (
   Logger.log(`${message} ${CircularJSON.stringify(value)}`, contextTag);
 };
 
-export const handlerBeforeCall = ({
+const handlerBeforeCall = ({
   Logger,
   className,
   methodName,
@@ -61,7 +61,7 @@ export const handlerBeforeCall = ({
   printMessage(Logger, args, `${className}#${methodName}`, "before");
 };
 
-export const handlerAfterCall = ({
+const handlerAfterCall = ({
   Logger,
   className,
   methodName,

@@ -1,11 +1,7 @@
 import * as fs from "fs";
 import { PrintLog, PrintLogProxy } from "..";
 import { Logger } from "@nestjs/common";
-import {
-  handlerBeforeCall,
-  handlerAfterCall,
-  printMessage
-} from "../PrintLogger";
+import { printMessage } from "../PrintLogger";
 
 class Dummy {
   @PrintLog()
