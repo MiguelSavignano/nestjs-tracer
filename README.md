@@ -1,5 +1,7 @@
 ## Nestjs tracer
 
+[![npm package](https://img.shields.io/npm/v/nestjs-tracer.svg)](https://img.shields.io/npm/v/nestjs-tracer.svg) [![code documentation](https://img.shields.io/badge/Code-documentation-blue.svg)](https://miguelsavignano.github.io/nestjs-tracer/globals.html)
+
 Use decorators for trace your class methods
 
 ## Install
