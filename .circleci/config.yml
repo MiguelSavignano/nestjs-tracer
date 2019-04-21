@@ -35,7 +35,7 @@ jobs:
       - run:
           name: Run tests
           command: |
-            npm test
+            npx jest --coverage
             ./tmp/cc-test-reporter format-coverage -t lcov -o tmp/codeclimate.json coverage/lcov.info
 
       - run:
