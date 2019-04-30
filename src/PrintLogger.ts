@@ -100,5 +100,7 @@ export const printMessage = (
   contextTag: string,
   type?: "before" | "after"
 ) => {
-  Logger.log(`${message} ${CircularJSON.stringify(value)}`, contextTag);
+  const valueToPrint =
+    typeof value === "string" ? value : CircularJSON.stringify(value);
+  Logger.log(`${message} ${valueToPrint}`, contextTag);
 };
