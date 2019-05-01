@@ -1,9 +1,16 @@
-import { Logger } from "@nestjs/common";
+import { Logger as NestLogger } from "@nestjs/common";
 
 import {
   PrintLog as PrintLogCore,
-  PrintLogAsync as PrintLogCoreAsync
+  PrintLogProxy as PrintLogProxyCore,
+  IPrintLogOptions
 } from "./PrintLogger";
 
-export const PrintLog = PrintLogCore(Logger);
-export const PrintLogAsync = PrintLogCoreAsync(Logger);
+export const PrintLog = ({
+  Logger = NestLogger,
+  ...options
+}: IPrintLogOptions = {}) => PrintLogCore({ Logger, ...options });
+
+export const PrintLogProxy = PrintLogProxyCore({
+  Logger: NestLogger
+});

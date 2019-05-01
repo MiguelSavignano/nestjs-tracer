@@ -1,9 +1,10 @@
 {
   "name": "nestjs-tracer",
-  "version": "0.3.8",
+  "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
+    "docs": "typedoc --out docs --mode modules",
     "build": "rm -fr *.js *.d.ts *.js.map request-context && tsc",
     "test": "jest"
   },
@@ -25,9 +26,12 @@
     "rxjs": "^6.4.0",
     "supertest": "^3.4.2",
     "ts-jest": "^24.0.0",
+    "ts-node": "^8.0.3",
+    "typedoc": "^0.14.2",
     "typescript": "^3.3.3333"
   },
   "dependencies": {
+    "circular-json": "^0.5.9",
     "uuid": "^3.3.2"
   }
 }

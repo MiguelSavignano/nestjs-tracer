@@ -3,9 +3,23 @@ jobs:
   build:
     docker:
       - image: circleci/node:10.13.0
+        environment:
+          - CC_TEST_REPORTER_ID: $CC_TEST_REPORTER_ID
     working_directory: ~/repo
     steps:
       - checkout
+
+      - run:
+          name: Download cc-test-reporter
+          command: |
+            mkdir -p tmp/
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./tmp/cc-test-reporter
+            chmod +x ./tmp/cc-test-reporter
+      - persist_to_workspace:
+          root: tmp
+          paths:
+            - cc-test-reporter
+
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "package-lock.json" }}
@@ -18,5 +32,15 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package-lock.json" }}
 
-      - run: npm test
+      - run:
+          name: Run tests
+          command: |
+            npx jest --coverage
+            ./tmp/cc-test-reporter format-coverage -t lcov -o tmp/codeclimate.json coverage/lcov.info
+
+      - run:
+          name: Upload coverage results to Code Climate
+          command: |
+            ./tmp/cc-test-reporter upload-coverage -i tmp/codeclimate.json
+
       - run: npm run build

@@ -3,9 +3,17 @@ export { ContextService } from "./ContextService";
 
 import {
   PrintLog as PrintLogCore,
-  PrintLogAsync as PrintLogCoreAsync
+  PrintLogProxy as PrintLogProxyCore,
+  IPrintLogOptions
 } from "../PrintLogger";
 
-export const PrintLog = PrintLogCore(RequestLogger);
-export const PrintLogAsync = PrintLogCoreAsync(RequestLogger);
+export const PrintLog = ({
+  Logger = RequestLogger,
+  ...options
+}: IPrintLogOptions = {}) => PrintLogCore({ Logger, ...options });
+
+export const PrintLogProxy = PrintLogProxyCore({
+  Logger: RequestLogger
+});
+
 export { RequestLogger };
