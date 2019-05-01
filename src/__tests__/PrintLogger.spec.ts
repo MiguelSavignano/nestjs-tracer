@@ -38,7 +38,7 @@ describe("PrintLog", () => {
     PrintLogProxy(instance, "hello");
     await instance.hello("Foo");
     expect(spy).nthCalledWith(1, 'Call with args: ["Foo"]', "Object#hello");
-    expect(spy).nthCalledWith(2, 'Return: "Hi Foo"', "Object#hello");
+    expect(spy).nthCalledWith(2, "Return: Hi Foo", "Object#hello");
   });
 
   describe("#PrintLogProxy", () => {
@@ -49,7 +49,7 @@ describe("PrintLog", () => {
       expect(instance.hello("Foo")).toEqual(`Hi Foo`);
       expect(spy).toBeCalled();
       expect(spy).nthCalledWith(1, 'Call with args: ["Foo"]', "Object#hello");
-      expect(spy).nthCalledWith(2, 'Return: "Hi Foo"', "Object#hello");
+      expect(spy).nthCalledWith(2, "Return: Hi Foo", "Object#hello");
     });
 
     it("change className", () => {
