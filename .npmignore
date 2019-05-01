@@ -1,5 +1,7 @@
 src
 .circleci
 examples
+docs
 jest.config.js
 tsconfig.json
+codeclimate.*
