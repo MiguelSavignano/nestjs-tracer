@@ -147,15 +147,15 @@ async function bootstrap() {
     static REQUEST_IP = "request:ip";
 
     static addTraces(req, _res) {
-      this.set(this.REQUEST_ID, uuidv1());
+      this.setTraceByUuid();
       this.set(this.REQUEST_IP, req.ip);
     }
   }
   const app = await NestFactory.create(AppModule, {
     logger: false
   });
-  app.use(ContextService.middlewareRequest());
-  app.use(ContextService.middleware());
+  app.use(ContextServiceCustom.middlewareRequest());
+  app.use(ContextServiceCustom.middleware());
   app.useLogger(RequestLogger);
   // ...
 }

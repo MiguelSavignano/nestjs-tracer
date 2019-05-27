@@ -2,6 +2,9 @@ import { Logger } from "@nestjs/common";
 import { ContextService } from "./ContextService";
 
 export class RequestLogger extends Logger {
+  constructor(private ContextService) {
+    super();
+  }
   log(message: any, context?: string) {
     super.log(message, `${this.buildTags()}${context}`);
   }
@@ -15,8 +18,8 @@ export class RequestLogger extends Logger {
   }
 
   buildTags() {
-    return ContextService.printTags();
+    return this.ContextService.printTags();
   }
 }
 
-export default new RequestLogger();
+export default new RequestLogger(ContextService);

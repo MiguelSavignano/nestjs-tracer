@@ -1,10 +1,33 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import * as fs from 'fs';
+import { NestFactory } from '@nestjs/core';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import * as session from 'express-session';
+import { ContextService, RequestLogger } from '../../../src/request-context';
+import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { logger: false });
+  app.use(
+    session({
+      secret: 'keyboard cat',
+      resave: false,
+      saveUninitialized: true,
+      cookie: {},
+    }),
+  );
+  app.use(ContextService.middlewareRequest());
+  // app.use(ContextService.middleware());
+
+  app.use(
+    ContextService.middleware({
+      addTraces(req) {
+        this.setTraceByUuid();
+        this.set('request:session_id', req.session.id);
+      },
+    }),
+  );
+  app.useLogger(RequestLogger);
+
   const options = new DocumentBuilder()
     .setTitle('Cats example')
     .setDescription('The cats API description')
