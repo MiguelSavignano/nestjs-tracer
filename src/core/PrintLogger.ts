@@ -54,12 +54,20 @@ export const PrintLog = ({ Logger, ...options }: IPrintLogOptions) => (
 
 const returnSameValue = value => value;
 
+const returnErrorMessage = (error: any | Error): any | string => {
+  if (error instanceof Error) {
+    return error.message;
+  }
+  return error;
+};
+
 const proxyHandler = ({
   Logger,
   className,
   methodName,
   printMessageFnc = printMessage,
   parseResult = returnSameValue,
+  parseError = returnErrorMessage,
   parseArguments = returnSameValue
 }) => ({
   apply: function(target, thisArg, args) {
@@ -84,7 +92,15 @@ const proxyHandler = ({
             "after"
           )
         )
-        .catch(error => {});
+        .catch(error => {
+          printMessage(
+            Logger,
+            "Return:",
+            parseError(error),
+            contextTag,
+            "after"
+          );
+        });
     } else {
       printMessage(Logger, "Return:", parseResult(result), contextTag, "after");
     }
