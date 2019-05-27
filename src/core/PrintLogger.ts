@@ -26,15 +26,13 @@ export const PrintLogProxy = ({ Logger }) => (
   const className = options.className || instance.constructor.name;
   const original = instance[methodName];
 
-  const proxy = new Proxy(
+  const proxy = new DecoratorProxy(
     original,
-    proxyHandler({
-      Logger,
-      className,
-      methodName,
-      ...options
-    })
-  );
+    className,
+    methodName,
+    Logger,
+    options
+  ).build();
   instance[methodName] = proxy;
 };
 
@@ -45,75 +43,89 @@ export const PrintLog = ({ Logger, ...options }: IPrintLogOptions) => (
 ) => {
   const className = target.constructor.name;
   const original = descriptor.value;
-  const proxy = new Proxy(
+  const proxy = new DecoratorProxy(
     original,
-    proxyHandler({ Logger, className, methodName, ...options })
-  );
+    className,
+    methodName,
+    Logger,
+    options
+  ).build();
   descriptor.value = proxy;
 };
 
-const returnSameValue = value => value;
+export class DecoratorProxy {
+  contextTag: string;
 
-const returnErrorMessage = (error: any | Error): any | string => {
-  if (error instanceof Error) {
-    return error.message;
+  constructor(
+    private originalFnc,
+    private className,
+    private methodName,
+    private Logger,
+    private loggerOptions: IPrintLogOptions = {}
+  ) {
+    this.contextTag = `${this.className}#${this.methodName}`;
   }
-  return error;
-};
 
-const proxyHandler = ({
-  Logger,
-  className,
-  methodName,
-  parseResult = returnSameValue,
-  parseError = returnErrorMessage,
-  parseArguments = returnSameValue
-}) => ({
-  apply: function(target, thisArg, args) {
-    const contextTag = `${className}#${methodName}`;
-    printMessage(
-      Logger,
-      "Call with args:",
-      parseArguments(args),
-      contextTag,
-      "before"
-    );
-    const printMessageResult = result => {
-      printMessage(Logger, "Return:", parseResult(result), contextTag, "after");
-    };
-    const printMessageError = error => {
-      printMessage(Logger, "Return:", parseError(error), contextTag, "after");
-    };
+  build() {
+    return new Proxy(this.originalFnc, {
+      apply: this.apply.bind(this)
+    });
+  }
 
+  apply(target, thisArg, args) {
+    this.printMessage("Call with args:", this.parseArguments(args), "before");
     try {
       const fncResult = target.apply(thisArg, args);
 
       if (fncResult instanceof Promise) {
         fncResult
-          .then(result => printMessageResult(result))
+          .then(result => this.printMessageResult(result))
           .catch(error => {
-            printMessageError(error);
+            this.printMessageError(error);
           });
         return fncResult;
       } else {
-        printMessageResult(fncResult);
+        this.printMessageResult(fncResult);
         return fncResult;
       }
     } catch (error) {
-      printMessageError(error);
+      this.printMessageError(error);
       throw error;
     }
   }
-});
 
-export const printMessage = (
-  Logger: ILogger,
-  message: string,
-  value: any,
-  contextTag: string,
-  type?: "before" | "after"
-) => {
-  const valueToPrint =
-    typeof value === "string" ? value : CircularJSON.stringify(value);
-  Logger.log(`${message} ${valueToPrint}`, contextTag);
-};
+  printMessage(message: string, value: any, type?: "before" | "after") {
+    const valueToPrint =
+      typeof value === "string" ? value : CircularJSON.stringify(value);
+    this.Logger.log(`${message} ${valueToPrint}`, this.contextTag);
+  }
+
+  printMessageResult(result) {
+    this.printMessage("Return:", this.parseResult(result), "after");
+  }
+
+  printMessageError(error) {
+    this.printMessage("Return:", this.parseError(error), "after");
+  }
+
+  parseError(error: any | Error): any | string {
+    if (error instanceof Error) {
+      return error.message;
+    }
+    return error;
+  }
+
+  parseArguments(value: any[]) {
+    if (this.loggerOptions.parseArguments) {
+      return this.loggerOptions.parseArguments(value);
+    }
+    return value;
+  }
+
+  parseResult(value: any) {
+    if (this.loggerOptions.parseResult) {
+      return this.loggerOptions.parseResult(value);
+    }
+    return value;
+  }
+}
