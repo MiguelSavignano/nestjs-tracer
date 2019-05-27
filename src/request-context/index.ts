@@ -5,7 +5,7 @@ import {
   PrintLog as PrintLogCore,
   PrintLogProxy as PrintLogProxyCore,
   IPrintLogOptions
-} from "../PrintLogger";
+} from "../core/PrintLogger";
 
 export const PrintLog = ({
   Logger = RequestLogger,
