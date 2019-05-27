@@ -3,20 +3,19 @@ import { ContextService } from "./ContextService";
 
 export class RequestLogger extends Logger {
   log(message: any, context?: string) {
-    super.log(message, `${RequestLogger.getRequestId()}${context}`);
+    super.log(message, `${this.buildTags()}${context}`);
   }
 
   warn(message: any, context?: string) {
-    super.warn(message, `${RequestLogger.getRequestId()}${context}`);
+    super.warn(message, `${this.buildTags()}${context}`);
   }
 
   error(message: any, trace?: string, context?: string) {
-    super.error(message, trace, `${RequestLogger.getRequestId()}${context}`);
+    super.error(message, trace, `${this.buildTags()}${context}`);
   }
 
-  static getRequestId(): string {
-    const id = ContextService.get(ContextService.REQUEST_ID);
-    return id ? `${id}] [` : "";
+  buildTags() {
+    return ContextService.printTags();
   }
 }
 
