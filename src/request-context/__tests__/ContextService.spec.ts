@@ -3,16 +3,6 @@ import * as ContextStore from "request-context";
 
 jest.mock("uuid/v1");
 
-class ContextServiceCustom extends ContextService {
-  static REQUEST_ID = "request:id";
-  static REQUEST_IP = "request:ip";
-
-  static addTraces(req, _res) {
-    this.setTraceByUuid();
-    this.set(this.REQUEST_IP, req.ip);
-  }
-}
-
 describe("ContextService", () => {
   let spy;
   beforeEach(() => {
@@ -20,7 +10,7 @@ describe("ContextService", () => {
     spy = jest
       .spyOn(ContextStore, "set")
       .mockImplementation(jest.fn(() => true));
-    ContextService.tracesKeys = [];
+    ContextService.tracesKeys = new Set();
   });
 
   it(".printTags", () => {
@@ -30,9 +20,9 @@ describe("ContextService", () => {
 
     expect(spy).toHaveBeenCalledWith("request:id", "UUID_MOCK");
     expect(ContextService.tracesKeys).toMatchInlineSnapshot(`
-Array [
+Set {
   "request:id",
-]
+}
 `);
     expect(ContextService.printTags()).toMatchInlineSnapshot(`"UUID_MOCK] ["`);
   });
@@ -47,12 +37,20 @@ Array [
   it(".middleware set request id with UUID and add ip", () => {
     jest.spyOn(ContextStore, "get").mockImplementation(() => "UUID_MOCK");
 
-    ContextServiceCustom.middleware()({ ip: "127.0.0.1" }, null, () => {});
+    const addTraces = function(req) {
+      this.setTraceByUuid();
+      this.set("request:ip", req.ip);
+    };
+    ContextService.middleware({ addTraces })(
+      { ip: "127.0.0.1" },
+      null,
+      () => {}
+    );
 
     expect(spy).toBeCalledTimes(2);
     expect(spy).toHaveBeenCalledWith("request:id", "UUID_MOCK");
     expect(spy).toHaveBeenLastCalledWith("request:ip", "127.0.0.1");
-    expect(ContextServiceCustom.printTags()).toMatchInlineSnapshot(
+    expect(ContextService.printTags()).toMatchInlineSnapshot(
       `"UUID_MOCK] [UUID_MOCK] ["`
     );
   });
