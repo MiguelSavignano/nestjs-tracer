@@ -16,12 +16,17 @@ class Dummy {
   }
 
   @PrintLog()
+  throwError(name) {
+    throw new Error(`Custom message ${name}`);
+  }
+
+  @PrintLog()
   async throwAsyncError(name) {
     throw new Error(`Custom message ${name}`);
   }
 
   @PrintLog()
-  helloAsyncErrorPromise(name) {
+  rejectErrorPromise(name) {
     return new Promise((resolve, reject) => {
       reject(`Custom message ${name}`);
     });
@@ -46,21 +51,40 @@ describe("PrintLog", () => {
   });
 
   describe("handle errors", () => {
+    it("trhow sync error", () => {
+      const spy = jest.spyOn(console, "log").mockImplementation(jest.fn());
+      try {
+        new Dummy().throwError("Bazz");
+      } catch (error) {
+        expect(error).toBeInstanceOf(Error);
+        expect(spy).toHaveBeenNthCalledWith(
+          1,
+          'Call with args: ["Bazz"]',
+          "Dummy#throwError"
+        );
+        expect(spy).toHaveBeenNthCalledWith(
+          2,
+          "Return: Custom message Bazz",
+          "Dummy#throwError"
+        );
+      }
+    });
+
     it("promise rejects catch", async () => {
       const spy = jest.spyOn(console, "log").mockImplementation(jest.fn());
       try {
-        await new Dummy().helloAsyncErrorPromise("Bazz");
+        await new Dummy().rejectErrorPromise("Bazz");
       } catch (error) {
         expect(error).toEqual("Error Bazz");
         expect(spy).toHaveBeenNthCalledWith(
           1,
           'Call with args: ["Bazz"]',
-          "Dummy#helloAsyncErrorPromise"
+          "Dummy#rejectErrorPromise"
         );
         expect(spy).toHaveBeenNthCalledWith(
           2,
           "Return: Error Bazz",
-          "Dummy#helloAsyncErrorPromise"
+          "Dummy#rejectErrorPromise"
         );
       }
     });
