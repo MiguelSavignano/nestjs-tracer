@@ -10,12 +10,14 @@ export interface IPrintLogOptions {
   Logger?: ILogger;
   parseResult?: (value: any) => any;
   parseArguments?: (value: any[]) => any[];
+  parseError?: (value: any | Error) => any | Error;
 }
 
 export interface IPrintLogProxyOptions {
   className?: string;
   parseResult?: (value: any) => any;
   parseArguments?: (value: any[]) => any[];
+  parseError?: (value: any | Error) => any | Error;
 }
 
 export const PrintLogProxy = ({ Logger }) => (
@@ -109,6 +111,10 @@ export class DecoratorProxy {
   }
 
   parseError(error: any | Error): any | string {
+    if (this.loggerOptions.parseError) {
+      return this.loggerOptions.parseError(error);
+    }
+
     if (error instanceof Error) {
       return error.message;
     }
