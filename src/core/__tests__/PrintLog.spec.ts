@@ -1,5 +1,8 @@
-import { PrintLog as PrintLogCore, IPrintLogOptions } from "../PrintLogger";
-import { printMessage } from "../PrintLogger";
+import {
+  PrintLog as PrintLogCore,
+  IPrintLogOptions,
+  DecoratorProxy
+} from "../PrintLogger";
 
 const PrintLog = ({ Logger = console, ...options }: IPrintLogOptions = {}) =>
   PrintLogCore({ Logger, ...options });
@@ -110,10 +113,18 @@ describe("PrintLog", () => {
     });
   });
 
+  const decoratorProxy = new DecoratorProxy(
+    () => {},
+    "Example",
+    "example",
+    console
+  );
+  const printMessage = decoratorProxy.printMessage.bind(decoratorProxy);
+
   describe("#printMessage", () => {
     it("with simple object", () => {
       const spy = jest.spyOn(console, "log").mockImplementation(jest.fn());
-      printMessage(console, "", { foo: "bazz" }, "Example#example");
+      printMessage("", { foo: "bazz" });
 
       expect(spy).toBeCalledWith(' {"foo":"bazz"}', "Example#example");
     });
@@ -121,10 +132,10 @@ describe("PrintLog", () => {
     it("with circular Object", () => {
       const spy = jest.spyOn(console, "log").mockImplementation(jest.fn());
 
-      const citcularObject = { foo: "bar" };
-      citcularObject["self"] = citcularObject;
+      const circularObject = { foo: "bar" };
+      circularObject["self"] = circularObject;
 
-      printMessage(console, "", citcularObject, "Example#example");
+      printMessage("", circularObject);
 
       expect(spy).toBeCalled();
       expect(spy).toBeCalledWith(
