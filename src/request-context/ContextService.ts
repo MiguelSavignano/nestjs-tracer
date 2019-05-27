@@ -1,9 +1,9 @@
 import * as ContextStore from "request-context";
 import * as uuidv1 from "uuid/v1";
 
-const tracesKeys: string[] = [];
-
 export class ContextService {
+  static tracesKeys: string[] = [];
+
   static REQUEST_ID = "request:id";
 
   static middlewareRequest() {
@@ -11,6 +11,10 @@ export class ContextService {
   }
 
   static addTraces(_req, _res) {
+    this.setTraceByUuid();
+  }
+
+  static setTraceByUuid() {
     this.set(this.REQUEST_ID, uuidv1());
   }
 
@@ -23,17 +27,17 @@ export class ContextService {
 
   static set(key: string, value: any) {
     ContextStore.set(key, value);
-    tracesKeys.push(key);
+    this.tracesKeys.push(key);
   }
 
   static printTags(): string {
-    const tags = tracesKeys.map(traceKey => {
+    const tags = this.tracesKeys.map(traceKey => {
       return ContextStore.get(traceKey);
     });
     return tags.map(this.printTag).join("");
   }
 
-  static printTag(value: string) {
+  private static printTag(value: string) {
     return value ? `${value}] [` : "";
   }
 }
