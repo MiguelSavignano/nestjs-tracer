@@ -75,7 +75,7 @@ describe("PrintLog", () => {
       try {
         await new Dummy().rejectErrorPromise("Bazz");
       } catch (error) {
-        expect(error).toEqual("Error Bazz");
+        expect(error).toEqual("Custom message Bazz");
         expect(spy).toHaveBeenNthCalledWith(
           1,
           'Call with args: ["Bazz"]',
@@ -83,7 +83,7 @@ describe("PrintLog", () => {
         );
         expect(spy).toHaveBeenNthCalledWith(
           2,
-          "Return: Error Bazz",
+          "Return: Custom message Bazz",
           "Dummy#rejectErrorPromise"
         );
       }

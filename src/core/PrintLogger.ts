@@ -65,55 +65,42 @@ const proxyHandler = ({
   Logger,
   className,
   methodName,
-  printMessageFnc = printMessage,
   parseResult = returnSameValue,
   parseError = returnErrorMessage,
   parseArguments = returnSameValue
 }) => ({
   apply: function(target, thisArg, args) {
     const contextTag = `${className}#${methodName}`;
-    printMessageFnc(
+    printMessage(
       Logger,
       "Call with args:",
       parseArguments(args),
       contextTag,
       "before"
     );
+    const printMessageResult = result => {
+      printMessage(Logger, "Return:", parseResult(result), contextTag, "after");
+    };
+    const printMessageError = error => {
+      printMessage(Logger, "Return:", parseError(error), contextTag, "after");
+    };
+
     try {
       const fncResult = target.apply(thisArg, args);
 
       if (fncResult instanceof Promise) {
         fncResult
-          .then(result =>
-            printMessageFnc(
-              Logger,
-              "Return:",
-              parseResult(result),
-              contextTag,
-              "after"
-            )
-          )
+          .then(result => printMessageResult(result))
           .catch(error => {
-            printMessage(
-              Logger,
-              "Return:",
-              parseError(error),
-              contextTag,
-              "after"
-            );
+            printMessageError(error);
           });
+        return fncResult;
       } else {
-        printMessage(
-          Logger,
-          "Return:",
-          parseResult(fncResult),
-          contextTag,
-          "after"
-        );
+        printMessageResult(fncResult);
+        return fncResult;
       }
-      return fncResult;
     } catch (error) {
-      printMessage(Logger, "Return:", parseError(error), contextTag, "after");
+      printMessageError(error);
       throw error;
     }
   }
