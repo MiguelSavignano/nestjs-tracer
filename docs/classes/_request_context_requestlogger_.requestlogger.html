@@ -92,20 +92,26 @@
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
-						<section class="tsd-index-section tsd-is-inherited">
+						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><a href="_request_context_requestlogger_.requestlogger.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite"><a href="_request_context_requestlogger_.requestlogger.html#constructor" class="tsd-kind-icon">constructor</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section tsd-is-private tsd-is-private-protected">
+							<h3>Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_request_context_requestlogger_.requestlogger.html#contextservice" class="tsd-kind-icon">Context<wbr>Service</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_request_context_requestlogger_.requestlogger.html#buildtags" class="tsd-kind-icon">build<wbr>Tags</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="_request_context_requestlogger_.requestlogger.html#error" class="tsd-kind-icon">error</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="_request_context_requestlogger_.requestlogger.html#log" class="tsd-kind-icon">log</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="_request_context_requestlogger_.requestlogger.html#warn" class="tsd-kind-icon">warn</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="_request_context_requestlogger_.requestlogger.html#error-1" class="tsd-kind-icon">error</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="_request_context_requestlogger_.requestlogger.html#getrequestid" class="tsd-kind-icon">get<wbr>Request<wbr>Id</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-static"><a href="_request_context_requestlogger_.requestlogger.html#isactive" class="tsd-kind-icon">is<wbr>Active</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="_request_context_requestlogger_.requestlogger.html#log-1" class="tsd-kind-icon">log</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="_request_context_requestlogger_.requestlogger.html#overridelogger" class="tsd-kind-icon">override<wbr>Logger</a></li>
@@ -116,29 +122,26 @@
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
+			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Constructors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
-					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Request<wbr>Logger<span class="tsd-signature-symbol">(</span>context<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span>, isTimeDiffEnabled<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_request_context_requestlogger_.requestlogger.html" class="tsd-signature-type">RequestLogger</a></li>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Request<wbr>Logger<span class="tsd-signature-symbol">(</span>ContextService<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_request_context_requestlogger_.requestlogger.html" class="tsd-signature-type">RequestLogger</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from Logger.__constructor</p>
+								<p>Overrides Logger.__constructor</p>
 								<ul>
-									<li>Defined in /home/masx/developer/javascript/npm/nestjs-tracer/node_modules/@nestjs/common/services/logger.service.d.ts:13</li>
+									<li>Defined in <a href="https://github.com/MiguelSavignano/nestjs-tracer/blob/ad83f94/src/request-context/RequestLogger.ts#L4">request-context/RequestLogger.ts:4</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> context: <span class="tsd-signature-type">string</span></h5>
-								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> isTimeDiffEnabled: <span class="tsd-signature-type">boolean</span></h5>
+									<h5>ContextService: <span class="tsd-signature-type">any</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="_request_context_requestlogger_.requestlogger.html" class="tsd-signature-type">RequestLogger</a></h4>
@@ -146,8 +149,38 @@
 					</ul>
 				</section>
 			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-private tsd-is-private-protected">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="contextservice" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> Context<wbr>Service</h3>
+					<div class="tsd-signature tsd-kind-icon">Context<wbr>Service<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/MiguelSavignano/nestjs-tracer/blob/ad83f94/src/request-context/RequestLogger.ts#L5">request-context/RequestLogger.ts:5</a></li>
+						</ul>
+					</aside>
+				</section>
+			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="buildtags" class="tsd-anchor"></a>
+					<h3>build<wbr>Tags</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">build<wbr>Tags<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/MiguelSavignano/nestjs-tracer/blob/ad83f94/src/request-context/RequestLogger.ts#L20">request-context/RequestLogger.ts:20</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
 					<a name="error" class="tsd-anchor"></a>
 					<h3>error</h3>
@@ -159,7 +192,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides Logger.error</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MiguelSavignano/nestjs-tracer/blob/21dd564/src/request-context/RequestLogger.ts#L13">request-context/RequestLogger.ts:13</a></li>
+									<li>Defined in <a href="https://github.com/MiguelSavignano/nestjs-tracer/blob/ad83f94/src/request-context/RequestLogger.ts#L16">request-context/RequestLogger.ts:16</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -189,7 +222,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides Logger.log</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MiguelSavignano/nestjs-tracer/blob/21dd564/src/request-context/RequestLogger.ts#L5">request-context/RequestLogger.ts:5</a></li>
+									<li>Defined in <a href="https://github.com/MiguelSavignano/nestjs-tracer/blob/ad83f94/src/request-context/RequestLogger.ts#L8">request-context/RequestLogger.ts:8</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -216,7 +249,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides Logger.warn</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MiguelSavignano/nestjs-tracer/blob/21dd564/src/request-context/RequestLogger.ts#L9">request-context/RequestLogger.ts:9</a></li>
+									<li>Defined in <a href="https://github.com/MiguelSavignano/nestjs-tracer/blob/ad83f94/src/request-context/RequestLogger.ts#L12">request-context/RequestLogger.ts:12</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -243,7 +276,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Logger.error</p>
 								<ul>
-									<li>Defined in /home/masx/developer/javascript/npm/nestjs-tracer/node_modules/@nestjs/common/services/logger.service.d.ts:21</li>
+									<li>Defined in /home/miguelsavignano/developer/npm/nestjs-tracer/node_modules/@nestjs/common/services/logger.service.d.ts:21</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -265,23 +298,6 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
-					<a name="getrequestid" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> get<wbr>Request<wbr>Id</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Request<wbr>Id<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/MiguelSavignano/nestjs-tracer/blob/21dd564/src/request-context/RequestLogger.ts#L17">request-context/RequestLogger.ts:17</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-static">
 					<a name="isactive" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagProtected">Protected</span> is<wbr>Active</h3>
@@ -293,7 +309,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Logger.isActive</p>
 								<ul>
-									<li>Defined in /home/masx/developer/javascript/npm/nestjs-tracer/node_modules/@nestjs/common/services/logger.service.d.ts:23</li>
+									<li>Defined in /home/miguelsavignano/developer/npm/nestjs-tracer/node_modules/@nestjs/common/services/logger.service.d.ts:23</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -311,7 +327,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Logger.log</p>
 								<ul>
-									<li>Defined in /home/masx/developer/javascript/npm/nestjs-tracer/node_modules/@nestjs/common/services/logger.service.d.ts:20</li>
+									<li>Defined in /home/miguelsavignano/developer/npm/nestjs-tracer/node_modules/@nestjs/common/services/logger.service.d.ts:20</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -341,7 +357,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Logger.overrideLogger</p>
 								<ul>
-									<li>Defined in /home/masx/developer/javascript/npm/nestjs-tracer/node_modules/@nestjs/common/services/logger.service.d.ts:18</li>
+									<li>Defined in /home/miguelsavignano/developer/npm/nestjs-tracer/node_modules/@nestjs/common/services/logger.service.d.ts:18</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -365,7 +381,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Logger.setMode</p>
 								<ul>
-									<li>Defined in /home/masx/developer/javascript/npm/nestjs-tracer/node_modules/@nestjs/common/services/logger.service.d.ts:19</li>
+									<li>Defined in /home/miguelsavignano/developer/npm/nestjs-tracer/node_modules/@nestjs/common/services/logger.service.d.ts:19</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -389,7 +405,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Logger.warn</p>
 								<ul>
-									<li>Defined in /home/masx/developer/javascript/npm/nestjs-tracer/node_modules/@nestjs/common/services/logger.service.d.ts:22</li>
+									<li>Defined in /home/miguelsavignano/developer/npm/nestjs-tracer/node_modules/@nestjs/common/services/logger.service.d.ts:22</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -417,7 +433,7 @@
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="../modules/_printlogger_.html">"<wbr>Print<wbr>Logger"</a>
+						<a href="../modules/_core_printlogger_.html">"core/<wbr>Print<wbr>Logger"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_index_.html">"index"</a>
@@ -440,8 +456,14 @@
 					<li class="current tsd-kind-class tsd-parent-kind-external-module">
 						<a href="_request_context_requestlogger_.requestlogger.html" class="tsd-kind-icon">Request<wbr>Logger</a>
 						<ul>
-							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited">
+							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
 								<a href="_request_context_requestlogger_.requestlogger.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_request_context_requestlogger_.requestlogger.html#contextservice" class="tsd-kind-icon">Context<wbr>Service</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_request_context_requestlogger_.requestlogger.html#buildtags" class="tsd-kind-icon">build<wbr>Tags</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
 								<a href="_request_context_requestlogger_.requestlogger.html#error" class="tsd-kind-icon">error</a>
@@ -454,9 +476,6 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-static">
 								<a href="_request_context_requestlogger_.requestlogger.html#error-1" class="tsd-kind-icon">error</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
-								<a href="_request_context_requestlogger_.requestlogger.html#getrequestid" class="tsd-kind-icon">get<wbr>Request<wbr>Id</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-static">
 								<a href="_request_context_requestlogger_.requestlogger.html#isactive" class="tsd-kind-icon">is<wbr>Active</a>

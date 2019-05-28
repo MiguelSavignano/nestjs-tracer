@@ -64,7 +64,10 @@
 	<div class="row">
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
-				<h2 id="nestjs-tracer">Nestjs tracer</h2>
+				<h1 id="nestjs-tracer">Nestjs tracer</h1>
+				<p><a href="https://www.npmjs.com/package/nestjs-tracer"><img src="https://img.shields.io/npm/v/nestjs-tracer.svg" alt="npm package"></a> <a href="https://miguelsavignano.github.io/nestjs-tracer/globals.html"><img src="https://img.shields.io/badge/Code-documentation-blue.svg" alt="code documentation"></a>
+					<a href="https://codeclimate.com/github/MiguelSavignano/nestjs-tracer/maintainability"><img src="https://api.codeclimate.com/v1/badges/8b4c8280e6801cce4ad6/maintainability" alt="Maintainability"></a>
+				<a href="https://codeclimate.com/github/MiguelSavignano/nestjs-tracer/test_coverage"><img src="https://api.codeclimate.com/v1/badges/8b4c8280e6801cce4ad6/test_coverage" alt="Test Coverage"></a></p>
 				<p>Use decorators for trace your class methods</p>
 				<h2 id="install">Install</h2>
 				<pre><code>npm <span class="hljs-keyword">install</span> nestjs-tracer <span class="hljs-comment">--save</span></code></pre><h2 id="usage">Usage</h2>
@@ -151,6 +154,27 @@ fs.existsSync(<span class="hljs-string">`./package.json`</span>);
     <span class="hljs-keyword">return</span> { token: <span class="hljs-string">"1234"</span>, result: { foo: <span class="hljs-string">"bar"</span> } };
   }
 }</code></pre>
+				<h3 id="advanced">Advanced</h3>
+				<p>Extend request context</p>
+				<p>You can create more traces in the middleware</p>
+				<p>Example:</p>
+				<pre><code class="language-js"><span class="hljs-comment">// main.ts</span>
+<span class="hljs-keyword">import</span> { ContextService, RequestLogger } <span class="hljs-keyword">from</span> <span class="hljs-string">"nestjs-tracer/request-context"</span>;
+
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">bootstrap</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">const</span> app = <span class="hljs-keyword">await</span> NestFactory.create(AppModule, { <span class="hljs-attr">logger</span>: <span class="hljs-literal">false</span> });
+  app.use(ContextService.middlewareRequest());
+  app.use(
+    ContextService.middleware({
+      addTraces(req) {
+        <span class="hljs-keyword">this</span>.setTraceByUuid();
+        <span class="hljs-keyword">this</span>.set(<span class="hljs-string">"request:ip"</span>, req.ip);
+      }
+    })
+  );
+  app.useLogger(RequestLogger);
+  <span class="hljs-comment">// ...</span>
+}</code></pre>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -160,7 +184,7 @@ fs.existsSync(<span class="hljs-string">`./package.json`</span>);
 						<a href="globals.html"><em>Globals</em></a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_printlogger_.html">"<wbr>Print<wbr>Logger"</a>
+						<a href="modules/_core_printlogger_.html">"core/<wbr>Print<wbr>Logger"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="modules/_index_.html">"index"</a>
