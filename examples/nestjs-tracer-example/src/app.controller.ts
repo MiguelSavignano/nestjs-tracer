@@ -1,7 +1,8 @@
 import { Controller, Get, Query, Logger } from '@nestjs/common';
 import { ApiModelPropertyOptional } from '@nestjs/swagger';
 import { AppService } from './app.service';
-import { PrintLog } from '../../../src/index';
+// import { PrintLog } from '../../../src/index';
+import { PrintLog } from '../../../src/request-context';
 
 export class GetHelloDto {
   @ApiModelPropertyOptional()

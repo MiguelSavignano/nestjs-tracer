@@ -1,6 +1,7 @@
 import requestLogger, { RequestLogger } from "../RequestLogger";
 import { Logger } from "@nestjs/common";
-import * as ContextService from "request-context";
+import { ContextService } from "../ContextService";
+
 jest.mock("uuid/v1");
 
 describe("RequestLogger", () => {
@@ -14,16 +15,12 @@ describe("RequestLogger", () => {
   });
 
   it(".getRequestId missing context key, return empty key", () => {
-    expect(RequestLogger.getRequestId()).toEqual("");
+    expect(requestLogger.buildTags()).toEqual("");
   });
 
-  it(".getRequestId use context key", () => {
-    jest.clearAllMocks();
-    const spy = jest
-      .spyOn(ContextService, "get")
-      .mockImplementation(jest.fn(() => "CONTEXT_KEY"));
-
-    expect(RequestLogger.getRequestId()).toEqual("CONTEXT_KEY] [");
+  it("#buildTags", () => {
+    const spy = jest.spyOn(ContextService, "printTags");
+    requestLogger.buildTags();
     expect(spy).toBeCalled();
   });
 });

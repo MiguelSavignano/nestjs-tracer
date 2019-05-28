@@ -130,3 +130,31 @@ class Dummy {
   }
 }
 ```
+
+### Advanced
+
+Extend request context
+
+You can create more traces in the middleware
+
+Example:
+
+```js
+// main.ts
+import { ContextService, RequestLogger } from "nestjs-tracer/request-context";
+
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule, { logger: false });
+  app.use(ContextService.middlewareRequest());
+  app.use(
+    ContextService.middleware({
+      addTraces(req) {
+        this.setTraceByUuid();
+        this.set("request:ip", req.ip);
+      }
+    })
+  );
+  app.useLogger(RequestLogger);
+  // ...
+}
+```
