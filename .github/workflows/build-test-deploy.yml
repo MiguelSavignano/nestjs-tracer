@@ -30,6 +30,12 @@ jobs:
         with:
           coverageCommand: npx jest --coverage
 
+      - name: Upload
+        uses: actions/upload-artifact@master
+        with:
+          name: coverage
+          path: ./coverage
+
       - name: Publish to Npm
         if: contains(github.ref, 'refs/tags/v')
         run: |
