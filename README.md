@@ -1,10 +1,10 @@
 # Nestjs tracer
 
+Use decorators for trace your class methods
+
 [![npm package](https://img.shields.io/npm/v/nestjs-tracer.svg)](https://www.npmjs.com/package/nestjs-tracer) [![code documentation](https://img.shields.io/badge/Code-documentation-blue.svg)](https://miguelsavignano.github.io/nestjs-tracer/globals.html)
 [![Maintainability](https://api.codeclimate.com/v1/badges/8b4c8280e6801cce4ad6/maintainability)](https://codeclimate.com/github/MiguelSavignano/nestjs-tracer/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/8b4c8280e6801cce4ad6/test_coverage)](https://api.codeclimate.com/v1/badges/8b4c8280e6801cce4ad6/test_coverage)
-
-Use decorators for trace your class methods
 
 ## Install
 
