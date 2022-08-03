@@ -99,7 +99,7 @@ export class DecoratorProxy {
   printMessage(message: string, value: any, type?: "before" | "after") {
     const valueToPrint =
       typeof value === "string" ? value : CircularJSON.stringify(value);
-    this.Logger.log(`${message} ${valueToPrint}`, this.contextTag);
+    this.Logger.log(`${message}`, {'data': ${valueToPrint}, 'datacontext':this.contextTag});
   }
 
   printMessageResult(result) {
