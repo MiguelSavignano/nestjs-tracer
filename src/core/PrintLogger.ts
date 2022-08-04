@@ -75,7 +75,7 @@ export class DecoratorProxy {
   }
 
   apply(target, thisArg, args) {
-    this.printMessage("Call with args:", this.parseArguments(args), "before");
+    this.printMessage("Request with args", this.parseArguments(args), "before");
     try {
       const fncResult = target.apply(thisArg, args);
 
@@ -99,15 +99,15 @@ export class DecoratorProxy {
   printMessage(message: string, value: any, type?: "before" | "after") {
     const valueToPrint =
       typeof value === "string" ? value : CircularJSON.stringify(value);
-    this.Logger.log(`${message} ${valueToPrint}`, this.contextTag);
+    this.Logger.log(`${message}`, {'data': valueToPrint, 'function':this.contextTag});
   }
 
   printMessageResult(result) {
-    this.printMessage("Return:", this.parseResult(result), "after");
+    this.printMessage("Response", this.parseResult(result), "after");
   }
 
   printMessageError(error) {
-    this.printMessage("Return:", this.parseError(error), "after");
+    this.printMessage("Response Error", this.parseError(error), "after");
   }
 
   parseError(error: any | Error): any | string {
