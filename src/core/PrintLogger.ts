@@ -1,4 +1,5 @@
 import * as CircularJSON from "circular-json";
+import tracer from 'dd-trace';
 
 export interface ILogger {
   log(message: any, context?: string): void;
@@ -76,17 +77,25 @@ export class DecoratorProxy {
 
   apply(target, thisArg, args) {
     this.printMessage("Request with args", this.parseArguments(args), "before");
+    const currentSpan = tracer.scope().active();
     try {
+      const childSpan = tracer.startSpan(this.contextTag, {childOf: currentSpan});
       const fncResult = target.apply(thisArg, args);
 
       if (fncResult instanceof Promise) {
         fncResult
-          .then(result => this.printMessageResult(result))
+          .then(result => {
+            childSpan.finish();
+            this.printMessageResult(result)
+          })
           .catch(error => {
+            childSpan.setTag('error', error);
+            childSpan.finish();
             this.printMessageError(error);
           });
         return fncResult;
       } else {
+        childSpan.finish();
         this.printMessageResult(fncResult);
         return fncResult;
       }
